@@ -21,7 +21,7 @@
             --border: #e2e8f0;
             --text-main: #0f172a;
             --text-sub: #64748b;
-            --radius: 18px;
+            --radius: 20px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -42,12 +42,6 @@
         /* Screens */
         .screen { display: none; flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 95px; }
         .screen.active { display: block; }
-
-        /* Fullscreen Sub-screens */
-        .tg-fullscreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 150; display: none; flex-direction: column; }
-        .tg-header { background: white; padding: 16px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); }
-        .tg-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-        .tg-footer { background: white; padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
 
         /* Cards & Banners */
         .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
@@ -87,6 +81,8 @@
         .nav-item i { font-size: 18px; display: block; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary); font-weight: 700; }
         .nav-item.doc-active { color: var(--secondary); font-weight: 700; }
+        .nav-item-center { background: var(--primary); color: white !important; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -10px auto 0 auto; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4); }
+        .nav-item-center i { margin: 0 !important; font-size: 20px; }
     </style>
 </head>
 <body>
@@ -101,7 +97,7 @@
                 <p>Clinical Intelligence</p>
             </div>
         </div>
-        <span id="roleBadge" class="role-badge badge-pat">Patient</span>
+        <span id="roleBadge" class="role-badge badge-pat">Patient Mode</span>
     </div>
 
     <!-- 0. AUTH SCREEN -->
@@ -109,20 +105,20 @@
         <div style="text-align: center; margin-bottom: 24px;">
             <div class="logo-icon" style="width: 60px; height: 60px; font-size: 28px; margin: 0 auto 12px; border-radius: 18px;"><i class="fa-solid fa-shield-heart"></i></div>
             <h2 style="color: var(--text-main); font-size: 22px; font-weight: 700;">MedCheck Portal</h2>
-            <p style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">Advanced Medication Safety & Clinical Chat</p>
+            <p style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">Select mode according to your design concept</p>
         </div>
 
         <div class="card">
             <div class="input-group">
                 <label>Full Name</label>
-                <input type="text" id="regName" placeholder="e.g., Anna Smith">
+                <input type="text" id="regName" value="Anna" placeholder="e.g., Anna">
             </div>
             <div class="input-group">
                 <label>Gmail Address</label>
-                <input type="email" id="regEmail" placeholder="user@gmail.com">
+                <input type="email" id="regEmail" value="anna.smith@gmail.com" placeholder="user@gmail.com">
             </div>
             <div class="input-group">
-                <label>Select Role</label>
+                <label>Select Mode</label>
                 <select id="regRole">
                     <option value="patient">Patient Mode</option>
                     <option value="doctor">Doctor Mode</option>
@@ -133,120 +129,122 @@
     </div>
 
     <!-- ================= PATIENT SCREENS ================= -->
+    <!-- 1. Patient Home -->
     <div id="p-home" class="screen">
         <div class="banner-patient">
-            <h3>Hello, <span class="userName"></span>! 👋</h3>
+            <h3>Hello, <span class="userName">Anna</span>! 👋</h3>
             <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Manage your medications and health with confidence.</p>
         </div>
 
         <div class="card" style="border-left: 4px solid var(--primary);">
-            <h4 style="font-size: 14px; margin-bottom: 6px;"><i class="fa-solid fa-calendar-days" style="color:var(--primary)"></i> Adherence Calendar</h4>
-            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Tap days to track your intake status.</p>
-            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h4 style="font-size: 14px;"><i class="fa-solid fa-calendar-check" style="color:var(--primary)"></i> Today, May 15, 2024</h4>
+                <span class="tag tag-spec" style="background:#d1fae5; color:#065f46;">All good!</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-main); margin-bottom: 8px;">You've taken all your medications.</p>
+            <hr style="border:none; border-top:1px solid var(--border); margin: 8px 0;">
+            <p style="font-size: 11px; color: var(--text-sub);">Next medication:</p>
+            <p style="font-size: 13px; font-weight: 600; color: var(--text-main);">Paracetamol 500 mg <span style="font-weight:400; color:var(--text-sub)">10:00 AM</span></p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div class="card" style="margin:0; cursor:pointer; text-align: center; padding: 16px;" onclick="switchPatientTab('p-meds')">
+                <i class="fa-solid fa-pills" style="font-size: 24px; color: var(--primary); margin-bottom: 8px; display:block;"></i>
+                <b style="font-size: 13px; display:block; margin-bottom:2px;">My Medications</b>
+                <span style="font-size: 10px; color: var(--text-sub);">View and manage</span>
+            </div>
+            <div class="card" style="margin:0; cursor:pointer; text-align: center; padding: 16px;" onclick="switchPatientTab('p-checker')">
+                <i class="fa-solid fa-shield-halved" style="font-size: 24px; color: var(--secondary); margin-bottom: 8px; display:block;"></i>
+                <b style="font-size: 13px; display:block; margin-bottom:2px;">Check Interactions</b>
+                <span style="font-size: 10px; color: var(--text-sub);">Check drug interactions</span>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="card" style="margin:0; cursor:pointer; text-align: center; padding: 16px;" onclick="switchPatientTab('p-effects')">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; color: var(--warning); margin-bottom: 8px; display:block;"></i>
+                <b style="font-size: 13px; display:block; margin-bottom:2px;">Side Effects</b>
+                <span style="font-size: 10px; color: var(--text-sub);">Learn about possible side effects</span>
+            </div>
+            <div class="card" style="margin:0; cursor:pointer; text-align: center; padding: 16px;" onclick="switchPatientTab('p-ask')">
+                <i class="fa-solid fa-comment-medical" style="font-size: 24px; color: var(--primary); margin-bottom: 8px; display:block;"></i>
+                <b style="font-size: 13px; display:block; margin-bottom:2px;">Ask a Doctor</b>
+                <span style="font-size: 10px; color: var(--text-sub);">Send a question to your doctor</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Patient Calendar Tracker -->
+    <div id="p-calendar" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Calendar</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">May 2024</p>
+
+        <div class="card">
             <div class="calendar-grid">
-                <div class="cal-day-name">M</div><div class="cal-day-name">T</div><div class="cal-day-name">W</div><div class="cal-day-name">T</div><div class="cal-day-name">F</div><div class="cal-day-name">S</div><div class="cal-day-name">S</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">23</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">24</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">25</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">26</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">27</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">28</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">1</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">2</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">3</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">4</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">5</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">6</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">7</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">8</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">9</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">10</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">11</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">12</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">13</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">14</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">15</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">16</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">17</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">18</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">19</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">20</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">21</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">22</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">23</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">24</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">25</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">26</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">27</div>
-                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">28</div>
-                <div class="cal-cell taken" id="targetWedDay" onclick="toggleCalendarDay(this)" style="border: 2px solid var(--primary);">29</div>
+                <div class="cal-day-name">MON</div><div class="cal-day-name">TUE</div><div class="cal-day-name">WED</div><div class="cal-day-name">THU</div><div class="cal-day-name">FRI</div><div class="cal-day-name">SAT</div><div class="cal-day-name">SUN</div>
+                <div class="cal-cell" style="opacity:0.3">29</div><div class="cal-cell" style="opacity:0.3">30</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">1</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">2</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">3</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">4</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">5</div>
+                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">6</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">7</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">8</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">9</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">10</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">11</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">12</div>
+                <div class="cal-cell taken" onclick="toggleCalendarDay(this)">13</div><div class="cal-cell taken" onclick="toggleCalendarDay(this)">14</div><div class="cal-cell taken" id="targetMay15" onclick="toggleCalendarDay(this)" style="border: 2px solid var(--primary);">15</div><div class="cal-cell" onclick="toggleCalendarDay(this)">16</div><div class="cal-cell" onclick="toggleCalendarDay(this)">17</div><div class="cal-cell" onclick="toggleCalendarDay(this)">18</div><div class="cal-cell" onclick="toggleCalendarDay(this)">19</div>
+                <div class="cal-cell" onclick="toggleCalendarDay(this)">20</div><div class="cal-cell" onclick="toggleCalendarDay(this)">21</div><div class="cal-cell" onclick="toggleCalendarDay(this)">22</div><div class="cal-cell" onclick="toggleCalendarDay(this)">23</div><div class="cal-cell" onclick="toggleCalendarDay(this)">24</div><div class="cal-cell" onclick="toggleCalendarDay(this)">25</div><div class="cal-cell" onclick="toggleCalendarDay(this)">26</div>
+                <div class="cal-cell" onclick="toggleCalendarDay(this)">27</div><div class="cal-cell" onclick="toggleCalendarDay(this)">28</div><div class="cal-cell" onclick="toggleCalendarDay(this)">29</div><div class="cal-cell" onclick="toggleCalendarDay(this)">30</div><div class="cal-cell" onclick="toggleCalendarDay(this)">31</div><div class="cal-cell" style="opacity:0.3">1</div><div class="cal-cell" style="opacity:0.3">2</div>
             </div>
-            <p id="calendarStatusText" style="font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 10px; text-align: center;"><i class="fa-solid fa-circle-check"></i> Status: Regular Intake (Adherent)</p>
+            <p id="calendarStatusText" style="font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 10px; text-align: center;"><i class="fa-solid fa-circle-check"></i> May 15: Regular Intake (Adherent)</p>
         </div>
-    </div>
 
-    <!-- Patient Meds Manager -->
-    <div id="p-meds" class="screen">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h3 style="font-size: 16px;">My Medications</h3>
-            <button class="btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin: 0;" onclick="addPatientMed()"><i class="fa-solid fa-plus"></i> Add Drug</button>
-        </div>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Manage all prescriptions across specialists</p>
-        
-        <div class="card" id="patientMedsListContainer">
+        <div class="card">
+            <h4 style="font-size: 13px; margin-bottom: 8px;">Today, May 15 Schedule</h4>
             <div class="med-row">
-                <div><b>Warfarin</b> <span class="tag tag-spec">Cardiology</span><br><small style="color:var(--text-sub)">5mg daily</small></div>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size: 16px;"></i>
+                <div><b>Paracetamol 500 mg</b><br><small style="color:var(--text-sub)">10:00 AM</small></div>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size: 18px;"></i>
             </div>
             <div class="med-row">
-                <div><b>Metformin</b> <span class="tag tag-spec">Endocrinology</span><br><small style="color:var(--text-sub)">850mg twice daily</small></div>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size: 16px;"></i>
+                <div><b>Vitamin D3 1000 IU</b><br><small style="color:var(--text-sub)">8:00 PM</small></div>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size: 18px;"></i>
             </div>
         </div>
     </div>
 
-    <!-- Patient Interaction Checker -->
-    <div id="p-checker" class="screen">
-        <h3 style="font-size: 16px; margin-bottom: 4px;">Interaction Checker</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Instant safety verification based on clinical database</p>
-        
+    <!-- 3. Patient Add Medication (+) -->
+    <div id="p-add" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Add Medication</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Record new prescription or supplement</p>
+
         <div class="card">
             <div class="input-group">
-                <label>First Medication</label>
-                <select id="pDrug1">
-                    <option value="warfarin">Warfarin</option>
-                    <option value="apixaban">Apixaban</option>
-                    <option value="aspirin">Aspirin</option>
-                    <option value="metformin">Metformin</option>
-                </select>
+                <label>Medication Name & Dosage</label>
+                <input type="text" id="newMedInput" placeholder="e.g., Warfarin 5mg">
             </div>
             <div class="input-group">
-                <label>Second Medication</label>
-                <select id="pDrug2">
-                    <option value="aspirin">Aspirin</option>
-                    <option value="warfarin">Warfarin</option>
-                    <option value="ibuprofen">Ibuprofen</option>
-                    <option value="amiodarone">Amiodarone</option>
+                <label>Specialty / Department</label>
+                <select id="newMedSpecialty">
+                    <option>Cardiology</option>
+                    <option>Endocrinology</option>
+                    <option>Gastroenterology</option>
+                    <option>Neurology</option>
                 </select>
             </div>
-            <button class="btn" onclick="checkPatientCombo()"><i class="fa-solid fa-shield-halved"></i> Check Safety</button>
+            <button class="btn" onclick="saveNewMed()"><i class="fa-solid fa-plus"></i> Save Medication</button>
         </div>
-        <div id="patientResult"></div>
     </div>
 
-    <!-- Patient Side Effects (Restored!) -->
-    <div id="p-effects" class="screen">
-        <h3 style="font-size: 16px; margin-bottom: 4px;">Side Effects & Risks</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Learn about possible side effects and red flags</p>
+    <!-- 4. Patient Ask a Doctor (Questions / Chat) -->
+    <div id="p-ask" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Ask a Doctor</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Describe your concern and get professional advice.</p>
 
-        <div class="card" style="border-left: 4px solid var(--warning);">
-            <h4 style="font-size: 13px; color: var(--warning); margin-bottom: 6px;"><i class="fa-solid fa-triangle-exclamation"></i> Common Side Effects</h4>
-            <p style="font-size: 12px; color: var(--text-main); line-height: 1.5;">• Nausea and mild stomach upset<br>• Dizziness or mild headache<br>• Minor bruising or bleeding gums</p>
+        <div class="card">
+            <div class="input-group">
+                <label>Your Question to Dr. Robert Chase</label>
+                <textarea id="patientQuestionInput" rows="3" placeholder="Type your question here..." style="width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; font-size:13px; outline:none;"></textarea>
+            </div>
+            <button class="btn" onclick="sendPatientQuestion()"><i class="fa-solid fa-paper-plane"></i> Send Question</button>
         </div>
 
-        <div class="card" style="border-left: 4px solid var(--danger);">
-            <h4 style="font-size: 13px; color: var(--danger); margin-bottom: 6px;"><i class="fa-solid fa-triangle-exclamation"></i> Serious Side Effects & Red Flags</h4>
-            <p style="font-size: 12px; color: var(--text-main); line-height: 1.5;">• Severe allergic reactions (rash, swelling)<br>• Unusual or heavy internal bleeding<br>• Severe chest pain or shortness of breath</p>
+        <div class="card">
+            <h4 style="font-size: 13px; margin-bottom: 8px;"><i class="fa-solid fa-comments"></i> Conversation History</h4>
+            <div id="patientChatBox" style="max-height: 180px; overflow-y: auto;">
+                <div class="msg-bubble msg-incoming"><b>Dr. Robert Chase:</b> Hello Anna, feel free to ask if you have any side effect concerns.</div>
+            </div>
         </div>
     </div>
 
@@ -254,103 +252,197 @@
     <div id="p-profile" class="screen">
         <h3 style="font-size: 16px; margin-bottom: 12px;">Patient Profile</h3>
         <div class="card">
-            <p style="font-size: 14px; margin-bottom: 8px;"><b>Name:</b> <span class="userName"></span></p>
-            <p style="font-size: 14px; margin-bottom: 16px;"><b>Gmail:</b> <span id="userGmail"></span></p>
+            <p style="font-size: 14px; margin-bottom: 8px;"><b>Name:</b> <span class="userName">Anna</span></p>
+            <p style="font-size: 14px; margin-bottom: 16px;"><b>Gmail:</b> <span id="userGmail">anna.smith@gmail.com</span></p>
             <button class="btn btn-danger" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
         </div>
     </div>
 
-    <!-- ================= DOCTOR SCREENS ================= -->
-    <div id="d-patients" class="screen">
-        <div class="banner-doctor">
-            <h3>Doctor Dashboard</h3>
-            <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Manage and monitor your patients efficiently.</p>
+    <!-- Patient Meds Tab -->
+    <div id="p-meds" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="font-size: 16px;">My Medications</h3>
+            <button class="btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin: 0;" onclick="switchPatientTab('p-add')"><i class="fa-solid fa-plus"></i> Add</button>
         </div>
-
-        <div class="card" style="padding: 12px;">
-            <div class="input-group" style="margin: 0;">
-                <label><i class="fa-solid fa-magnifying-glass"></i> Quick Patient Search</label>
-                <input type="text" id="patientSearchInput" placeholder="Type name (e.g. Anna)..." onkeyup="filterPatients()">
+        <div class="card" id="patientMedsListContainer">
+            <div class="med-row">
+                <div><b>Paracetamol</b> <span class="tag tag-spec">General</span><br><small style="color:var(--text-sub)">500mg</small></div>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary)"></i>
             </div>
-        </div>
-
-        <div id="docPatientsList">
-            <div class="card patient-card" data-name="anna smith" style="border-left: 4px solid var(--secondary); cursor: pointer;" onclick="openDoctorPatientModal('Anna Smith', 'anna.smith.med@gmail.com', 'Cardio + Endo', ['Warfarin (Cardiology - 5mg)', 'Metformin (Endocrinology - 850mg)', 'Omeprazole (Gastro - 20mg)'])">
-                <div style="display: flex; justify-content: space-between;">
-                    <b style="font-size: 14px;">Anna Smith</b>
-                    <span class="tag tag-spec">Cardio + Endo</span>
-                </div>
-                <p style="font-size: 11px; color: var(--text-sub); margin: 2px 0 6px 0;">anna.smith.med@gmail.com</p>
-                <div id="docPatientStatusBadge">
-                    <span style="font-size: 12px; color: var(--secondary); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Regular Intake (Adherent)</span>
-                </div>
-            </div>
-
-            <div class="card patient-card" data-name="ivan petrov" style="border-left: 4px solid var(--warning); cursor: pointer;" onclick="openDoctorPatientModal('Ivan Petrov', 'ivan.petrov@gmail.com', 'Neurology', ['Gabapentin (Neurology - 300mg)'])">
-                <div style="display: flex; justify-content: space-between;">
-                    <b style="font-size: 14px;">Ivan Petrov</b>
-                    <span class="tag tag-spec">Neurology</span>
-                </div>
-                <p style="font-size: 11px; color: var(--text-sub); margin: 2px 0 6px 0;">ivan.petrov@gmail.com</p>
-                <span style="font-size: 12px; color: var(--warning); font-weight: 600;"><i class="fa-solid fa-triangle-exclamation"></i> Irregular Intake (Missed 1-2 days)</span>
+            <div class="med-row">
+                <div><b>Vitamin D3</b> <span class="tag tag-spec">Endocrinology</span><br><small style="color:var(--text-sub)">1000 IU</small></div>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary)"></i>
             </div>
         </div>
     </div>
 
-    <!-- Doctor Clinical Analysis -->
-    <div id="d-checker" class="screen">
-        <h3 style="font-size: 16px; margin-bottom: 4px;">Clinical Analysis</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Pharmacokinetic mechanisms & severity grading</p>
-        
+    <!-- Patient Interaction Checker -->
+    <div id="p-checker" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Check Interactions</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Verify safety between two drugs</p>
         <div class="card">
             <div class="input-group">
-                <label>Drug A (Primary)</label>
-                <select id="dDrug1">
+                <label>First Medication</label>
+                <select id="pDrug1">
                     <option value="warfarin">Warfarin</option>
                     <option value="apixaban">Apixaban</option>
+                    <option value="aspirin">Aspirin</option>
                 </select>
             </div>
             <div class="input-group">
-                <label>Drug B (Secondary)</label>
+                <label>Second Medication</label>
+                <select id="pDrug2">
+                    <option value="aspirin">Aspirin</option>
+                    <option value="ibuprofen">Ibuprofen</option>
+                    <option value="amiodarone">Amiodarone</option>
+                </select>
+            </div>
+            <button class="btn" onclick="checkPatientCombo()"><i class="fa-solid fa-shield-halved"></i> Check Interaction</button>
+        </div>
+        <div id="patientResult"></div>
+    </div>
+
+    <!-- Patient Side Effects -->
+    <div id="p-effects" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Side Effects</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Common & serious symptoms</p>
+        <div class="card" style="border-left: 4px solid var(--warning);">
+            <h4 style="font-size: 13px; color: var(--warning); margin-bottom: 6px;">Common Side Effects</h4>
+            <p style="font-size: 12px; color: var(--text-main);">• Nausea<br>• Diarrhea<br>• Rash<br>• Vomiting<br>• Abdominal pain</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--danger);">
+            <h4 style="font-size: 13px; color: var(--danger); margin-bottom: 6px;">Serious Side Effects</h4>
+            <p style="font-size: 12px; color: var(--text-main);">• Allergic reaction<br>• Severe skin reaction<br>• Clostridium difficile associated diarrhea</p>
+        </div>
+    </div>
+
+    <!-- ================= DOCTOR SCREENS ================= -->
+    <!-- 1. Doctor Home -->
+    <div id="d-home" class="screen">
+        <div class="banner-doctor">
+            <h3>Good morning, <br>Dr. Smith 👨‍⚕️</h3>
+            <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Professional tools for better medication safety.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
+            <div class="card" style="margin:0; text-align:center; padding:12px; cursor:pointer;" onclick="switchDoctorTab('d-patients')">
+                <b style="font-size: 18px; color: var(--secondary); display:block;">12</b>
+                <span style="font-size: 10px; color: var(--text-sub);">Patients</span>
+            </div>
+            <div class="card" style="margin:0; text-align:center; padding:12px; cursor:pointer;" onclick="switchDoctorTab('d-inbox')">
+                <b style="font-size: 18px; color: var(--warning); display:block;">3</b>
+                <span style="font-size: 10px; color: var(--text-sub);">Questions</span>
+            </div>
+            <div class="card" style="margin:0; text-align:center; padding:12px; cursor:pointer;">
+                <b style="font-size: 18px; color: var(--danger); display:block;">2</b>
+                <span style="font-size: 10px; color: var(--text-sub);">Alerts</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="font-size: 13px;">Recent Patients</h4>
+                <a href="#" onclick="switchDoctorTab('d-patients'); return false;" style="font-size: 11px; color: var(--secondary); text-decoration:none;">View all</a>
+            </div>
+            <div class="med-row" style="cursor:pointer;" onclick="openDoctorPatientModal('Anna Johnson', 'anna.johnson@gmail.com', 'Cardiology', ['Warfarin 5mg'])">
+                <div><b>Anna Johnson</b><br><small style="color:var(--text-sub)">Today, 9:35 AM</small></div>
+                <span class="tag" style="background:#e0e7ff; color:#4338ca;"><i class="fa-solid fa-comment"></i> 2</span>
+            </div>
+            <div class="med-row" style="cursor:pointer;" onclick="openDoctorPatientModal('Michael Brown', 'michael@gmail.com', 'Endocrinology', ['Metformin 850mg'])">
+                <div><b>Michael Brown</b><br><small style="color:var(--text-sub)">Today, 8:45 AM</small></div>
+                <span class="tag" style="background:#e0e7ff; color:#4338ca;"><i class="fa-solid fa-comment"></i> 1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Doctor Patients List (with Quick Search) -->
+    <div id="d-patients" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Patient Management</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Quick search & clinical overview</p>
+        
+        <div class="card" style="padding: 10px;">
+            <div class="input-group" style="margin: 0;">
+                <input type="text" id="patientSearchInput" placeholder="Quick search by name (e.g. Anna)..." onkeyup="filterPatients()">
+            </div>
+        </div>
+
+        <div id="docPatientsList">
+            <div class="card patient-card" data-name="anna johnson" style="border-left: 4px solid var(--secondary); cursor:pointer;" onclick="openDoctorPatientModal('Anna Johnson', 'anna.johnson@gmail.com', 'Cardio + Endo', ['Warfarin 5mg', 'Metformin 850mg', 'Omeprazole 20mg'])">
+                <div style="display:flex; justify-content:space-between;">
+                    <b style="font-size: 14px;">Anna Johnson</b>
+                    <span class="tag tag-spec">Cardio</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-sub); margin: 2px 0;">anna.johnson@gmail.com</p>
+                <p style="font-size: 12px; color: var(--secondary); font-weight:600;"><i class="fa-solid fa-circle-check"></i> Regular Intake (Adherent)</p>
+            </div>
+            <div class="card patient-card" data-name="michael brown" style="border-left: 4px solid var(--warning); cursor:pointer;" onclick="openDoctorPatientModal('Michael Brown', 'michael@gmail.com', 'Endocrinology', ['Metformin 850mg'])">
+                <div style="display:flex; justify-content:space-between;">
+                    <b style="font-size: 14px;">Michael Brown</b>
+                    <span class="tag tag-spec">Endo</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-sub); margin: 2px 0;">michael@gmail.com</p>
+                <p style="font-size: 12px; color: var(--warning); font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> Irregular Intake (Missed 2 days)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Doctor Check Interactions -->
+    <div id="d-checker" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Check Interactions</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Select medications to check</p>
+
+        <div class="card">
+            <div class="input-group">
+                <label>Primary Drug</label>
+                <select id="dDrug1">
+                    <option value="warfarin">Warfarin 5 mg</option>
+                    <option value="apixaban">Apixaban 5 mg</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Secondary Drug</label>
                 <select id="dDrug2">
                     <option value="aspirin">Aspirin</option>
                     <option value="ibuprofen">Ibuprofen</option>
                     <option value="amiodarone">Amiodarone</option>
                 </select>
             </div>
-            <button class="btn btn-doc" onclick="runClinicalAnalysis()"><i class="fa-solid fa-microscope"></i> Run Analysis</button>
+            <button class="btn btn-doc" onclick="runClinicalAnalysis()"><i class="fa-solid fa-microscope"></i> Check Interaction</button>
         </div>
         <div id="doctorResult"></div>
     </div>
 
-    <!-- Doctor Side Effects Reference (Restored!) -->
+    <!-- 4. Doctor Side Effects Reference -->
     <div id="d-effects" class="screen">
-        <h3 style="font-size: 16px; margin-bottom: 4px;">Pharmacological Side Effects</h3>
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Side Effects</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Reference guide for adverse drug reactions</p>
 
         <div class="card">
             <div class="input-group">
-                <label>Select Medication</label>
-                <select id="docSideEffectDrug">
-                    <option>Warfarin 5mg</option>
-                    <option>Apixaban 5mg</option>
-                    <option>Metformin 850mg</option>
+                <label>Select medication</label>
+                <select>
+                    <option>Amoxicillin 500 mg</option>
+                    <option>Warfarin 5 mg</option>
                 </select>
             </div>
-            <h4 style="font-size: 13px; color: var(--secondary); margin: 10px 0 6px 0;"><i class="fa-solid fa-notes-medical"></i> Common Adverse Reactions</h4>
-            <p style="font-size: 12px; color: var(--text-main); line-height: 1.5;">• Increased bleeding risk & bruising<br>• Gastrointestinal discomfort<br>• Mild headache / fatigue</p>
+            <h4 style="font-size: 13px; color: var(--secondary); margin-top: 10px; margin-bottom: 6px;">Common Side Effects</h4>
+            <p style="font-size: 12px; color: var(--text-main); line-height: 1.5;">• Nausea<br>• Diarrhea<br>• Rash<br>• Vomiting<br>• Abdominal pain</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--danger);">
+            <h4 style="font-size: 13px; color: var(--danger); margin-bottom: 6px;">Serious Side Effects</h4>
+            <p style="font-size: 12px; color: var(--text-main); line-height: 1.5;">• Allergic reaction<br>• Severe skin reaction<br>• Clostridium difficile associated diarrhea</p>
         </div>
     </div>
 
-    <!-- Doctor Inbox / Chat list -->
+    <!-- Doctor Inbox / Chats -->
     <div id="d-inbox" class="screen">
-        <h3 style="font-size: 16px; margin-bottom: 12px;">Patient Chats</h3>
-        <div class="card" style="cursor: pointer; display: flex; align-items: center; gap: 12px;" onclick="openDoctorChat('Anna Smith')">
-            <div style="width: 40px; height: 40px; background: var(--secondary-light); color: var(--secondary); border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight:700;">AS</div>
-            <div style="flex:1;">
-                <div style="display:flex; justify-content:between;"><b style="font-size:13px;">Anna Smith</b><small style="color:var(--text-sub); font-size:10px;">10:45 AM</small></div>
-                <p style="font-size:12px; color:var(--text-sub); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:200px;">Doctor, quick question regarding my Metformin dosage...</p>
+        <h3 style="font-size: 16px; margin-bottom: 12px;">Patient Questions & Chats</h3>
+        <div class="card" style="cursor:pointer;" onclick="openDoctorChat('Anna Johnson')">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <b style="font-size:13px;">Anna Johnson</b>
+                <small style="color:var(--text-sub); font-size:10px;">9:35 AM</small>
             </div>
+            <p style="font-size:12px; color:var(--text-sub);">"Doctor, quick question regarding my Warfarin dosage..."</p>
         </div>
     </div>
 
@@ -358,41 +450,56 @@
     <div id="d-profile" class="screen">
         <h3 style="font-size: 16px; margin-bottom: 12px;">Doctor Profile</h3>
         <div class="card">
-            <p style="font-size: 14px; margin-bottom: 6px;"><b>Physician:</b> <span class="userName"></span></p>
-            <p style="font-size: 14px; margin-bottom: 16px;"><b>Gmail:</b> <span id="docGmail"></span></p>
+            <p style="font-size: 14px; margin-bottom: 6px;"><b>Physician:</b> <span class="userName">Dr. Smith</span></p>
+            <p style="font-size: 14px; margin-bottom: 16px;"><b>Gmail:</b> <span id="docGmail">dr.smith@medcheck.com</span></p>
             <button class="btn btn-danger" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"><span> Log Out</span></i></button>
         </div>
     </div>
 
     <!-- ================= TELEGRAM-STYLE FULLSCREEN CHAT ================= -->
-    <div id="tgChatScreen" class="tg-fullscreen">
-        <div class="tg-header">
+    <div id="tgChatScreen" class="tg-fullscreen" style="position: absolute; top:0; left:0; width:100%; height:100%; background:var(--bg-main); z-index:150; display:none; flex-direction:column;">
+        <div class="tg-header" style="background:white; padding:16px 20px; display:flex; align-items:center; gap:15px; border-bottom:1px solid var(--border);">
             <i class="fa-solid fa-arrow-left" style="cursor:pointer; font-size:18px;" onclick="closeChat()"></i>
             <div>
                 <b id="chatTitle" style="font-size: 14px; display: block;">Dr. Robert Chase</b>
                 <span style="font-size: 10px; color: var(--secondary);">online</span>
             </div>
         </div>
-        <div class="tg-body" id="tgChatMessages">
+        <div class="tg-body" id="tgChatMessages" style="flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px;">
             <div class="msg-bubble msg-incoming">Hello! Feel free to ask any questions about your prescriptions or side effects.</div>
         </div>
-        <div class="tg-footer">
+        <div class="tg-footer" style="background:white; padding:12px 16px; border-top:1px solid var(--border); display:flex; gap:10px; align-items:center;">
             <input type="text" id="tgChatInput" placeholder="Write a message..." style="flex:1; padding:10px 14px; border:1px solid var(--border); border-radius:20px; outline:none; font-size:13px;">
             <button onclick="sendTgMessage()" style="background:var(--primary); color:white; border:none; width:40px; height:40px; border-radius:50%; cursor:pointer;"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 
     <!-- ================= FULLSCREEN DOCTOR PATIENT MODAL ================= -->
-    <div id="docPatientDetailScreen" class="tg-fullscreen">
-        <div class="tg-header">
+    <div id="docPatientDetailScreen" class="tg-fullscreen" style="position: absolute; top:0; left:0; width:100%; height:100%; background:var(--bg-main); z-index:150; display:none; flex-direction:column;">
+        <div class="tg-header" style="background:white; padding:16px 20px; display:flex; align-items:center; gap:15px; border-bottom:1px solid var(--border);">
             <i class="fa-solid fa-arrow-left" style="cursor:pointer; font-size:18px;" onclick="closeDoctorPatientModal()"></i>
             <b id="modalPatientName" style="font-size: 15px;">Patient Details</b>
         </div>
-        <div class="tg-body" id="modalPatientContent"></div>
+        <div class="tg-body" id="modalPatientContent" style="flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px;"></div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <div class="nav-bar" id="bottomNav" style="display:none;"></div>
+    <!-- Bottom Navigation Bar (Patient) -->
+    <div class="nav-bar" id="patientNavBar" style="display:none;">
+        <div class="nav-item active" onclick="switchPatientTab('p-home')"><i class="fa-solid fa-house"></i>Home</div>
+        <div class="nav-item" onclick="switchPatientTab('p-calendar')"><i class="fa-solid fa-calendar-days"></i>Calendar</div>
+        <div class="nav-item" onclick="switchPatientTab('p-add')"><div class="nav-item-center"><i class="fa-solid fa-plus"></i></div></div>
+        <div class="nav-item" onclick="switchPatientTab('p-ask')"><i class="fa-solid fa-comment-medical"></i>Questions</div>
+        <div class="nav-item" onclick="switchPatientTab('p-profile')"><i class="fa-solid fa-user"></i>Profile</div>
+    </div>
+
+    <!-- Bottom Navigation Bar (Doctor) -->
+    <div class="nav-bar" id="doctorNavBar" style="display:none;">
+        <div class="nav-item doc-active" onclick="switchDoctorTab('d-home')"><i class="fa-solid fa-house"></i>Home</div>
+        <div class="nav-item" onclick="switchDoctorTab('d-patients')"><i class="fa-solid fa-users"></i>Patients</div>
+        <div class="nav-item" onclick="switchDoctorTab('d-checker')"><i class="fa-solid fa-shield-halved"></i>Safety</div>
+        <div class="nav-item" onclick="switchDoctorTab('d-effects')"><i class="fa-solid fa-triangle-exclamation"></i>Side Effects</div>
+        <div class="nav-item" onclick="switchDoctorTab('d-profile')"><i class="fa-solid fa-user"></i>Profile</div>
+    </div>
 </div>
 
 <script>
@@ -414,66 +521,61 @@
         }
     };
 
-    let user = { name: '', email: '', role: '' };
-    let missedDaysCount = 0;
+    let user = { name: 'Anna', email: 'anna.smith@gmail.com', role: 'patient' };
 
     function registerUser() {
-        user.name = document.getElementById('regName').value || 'Anna Smith';
-        user.email = document.getElementById('regEmail').value || 'user@gmail.com';
+        user.name = document.getElementById('regName').value || 'Anna';
+        user.email = document.getElementById('regEmail').value || 'anna.smith@gmail.com';
         user.role = document.getElementById('regRole').value;
 
         document.getElementById('screen-auth').classList.remove('active');
         document.getElementById('appHeader').style.display = 'flex';
-        document.getElementById('bottomNav').style.display = 'flex';
 
         document.querySelectorAll('.userName').forEach(el => el.innerText = user.name);
-        
+
         if (user.role === 'patient') {
             document.getElementById('userGmail').innerText = user.email;
             document.getElementById('roleBadge').className = 'role-badge badge-pat';
             document.getElementById('roleBadge').innerText = 'Patient Mode';
-            setupPatientNav();
-            showScreen('p-home');
+            document.getElementById('patientNavBar').style.display = 'flex';
+            switchPatientTab('p-home');
         } else {
             document.getElementById('docGmail').innerText = user.email;
             document.getElementById('roleBadge').className = 'role-badge badge-doc';
             document.getElementById('roleBadge').innerText = 'Doctor Mode';
-            setupDoctorNav();
-            showScreen('d-patients');
+            document.getElementById('doctorNavBar').style.display = 'flex';
+            switchDoctorTab('d-home');
         }
     }
 
-    function setupPatientNav() {
-        document.getElementById('bottomNav').innerHTML = `
-            <div class="nav-item active" onclick="navClick(this, 'p-home')"><i class="fa-solid fa-house"></i>Home</div>
-            <div class="nav-item" onclick="navClick(this, 'p-meds')"><i class="fa-solid fa-pills"></i>Meds</div>
-            <div class="nav-item" onclick="navClick(this, 'p-checker')"><i class="fa-solid fa-shield-halved"></i>Safety</div>
-            <div class="nav-item" onclick="navClick(this, 'p-effects')"><i class="fa-solid fa-triangle-exclamation"></i>Effects</div>
-            <div class="nav-item" onclick="navClick(this, 'p-profile')"><i class="fa-solid fa-user"></i>Profile</div>
-        `;
-    }
-
-    function setupDoctorNav() {
-        document.getElementById('bottomNav').innerHTML = `
-            <div class="nav-item doc-active" onclick="navClick(this, 'd-patients')"><i class="fa-solid fa-users"></i>Patients</div>
-            <div class="nav-item" onclick="navClick(this, 'd-checker')"><i class="fa-solid fa-microscope"></i>Analysis</div>
-            <div class="nav-item" onclick="navClick(this, 'd-effects')"><i class="fa-solid fa-notes-medical"></i>Effects</div>
-            <div class="nav-item" onclick="navClick(this, 'd-inbox')"><i class="fa-solid fa-envelope"></i>Chats</div>
-            <div class="nav-item" onclick="navClick(this, 'd-profile')"><i class="fa-solid fa-user-doctor"></i>Profile</div>
-        `;
-    }
-
-    function navClick(el, screenId) {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active', 'doc-active'));
-        el.classList.add(user.role === 'patient' ? 'active' : 'doc-active');
-        showScreen(screenId);
-    }
-
-    function showScreen(id) {
+    function switchPatientTab(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+        document.getElementById(screenId).classList.add('active');
+        
+        // Highlight active nav item
+        let navItems = document.querySelectorAll('#patientNavBar .nav-item');
+        navItems.forEach(i => i.classList.remove('active'));
+        if(screenId === 'p-home') navItems[0].classList.add('active');
+        if(screenId === 'p-calendar') navItems[1].classList.add('active');
+        if(screenId === 'p-add') navItems[2].classList.add('active');
+        if(screenId === 'p-ask') navItems[3].classList.add('active');
+        if(screenId === 'p-profile') navItems[4].classList.add('active');
     }
 
+    function switchDoctorTab(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+
+        let navItems = document.querySelectorAll('#doctorNavBar .nav-item');
+        navItems.forEach(i => i.classList.remove('doc-active'));
+        if(screenId === 'd-home') navItems[0].classList.add('doc-active');
+        if(screenId === 'd-patients') navItems[1].classList.add('doc-active');
+        if(screenId === 'd-checker') navItems[2].classList.add('doc-active');
+        if(screenId === 'd-effects') navItems[3].classList.add('doc-active');
+        if(screenId === 'd-profile') navItems[4].classList.add('doc-active');
+    }
+
+    let missedDaysCount = 0;
     function toggleCalendarDay(cell) {
         if(cell.classList.contains('taken')) {
             cell.classList.remove('taken');
@@ -486,25 +588,36 @@
             cell.classList.add('taken');
             missedDaysCount = Math.max(0, missedDaysCount - 1);
         }
-        updateAdherenceLogicUI();
+        let statusText = document.getElementById('calendarStatusText');
+        if(missedDaysCount === 0) {
+            statusText.innerHTML = `<i class="fa-solid fa-circle-check"></i> May 15: Regular Intake (Adherent)`;
+            statusText.style.color = "var(--primary)";
+        } else {
+            statusText.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> May 15: Missed ${missedDaysCount} days`;
+            statusText.style.color = "var(--danger)";
+        }
     }
 
-    function updateAdherenceLogicUI() {
-        let statusText = document.getElementById('calendarStatusText');
-        let docBadge = document.getElementById('docPatientStatusBadge');
+    function saveNewMed() {
+        let med = document.getElementById('newMedInput').value;
+        let spec = document.getElementById('newMedSpecialty').value;
+        if(med) {
+            let list = document.getElementById('patientMedsListContainer');
+            list.innerHTML += `<div class="med-row"><div><b>${med}</b> <span class="tag tag-spec">${spec}</span></div><i class="fa-solid fa-circle-check" style="color:var(--primary)"></i></div>`;
+            alert("Medication successfully saved!");
+            document.getElementById('newMedInput').value = '';
+            switchPatientTab('p-meds');
+        }
+    }
 
-        if(missedDaysCount === 0) {
-            statusText.innerHTML = `<i class="fa-solid fa-circle-check"></i> Status: Regular Intake (Adherent)`;
-            statusText.style.color = "var(--primary)";
-            if(docBadge) docBadge.innerHTML = `<span style="font-size: 12px; color: var(--secondary); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Regular Intake (Adherent)</span>`;
-        } else if(missedDaysCount <= 2) {
-            statusText.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Status: Missed ${missedDaysCount} days (Irregular)`;
-            statusText.style.color = "var(--warning)";
-            if(docBadge) docBadge.innerHTML = `<span style="font-size: 12px; color: var(--warning); font-weight: 600;"><i class="fa-solid fa-triangle-exclamation"></i> Irregular Intake (Missed ${missedDaysCount} days)</span>`;
-        } else {
-            statusText.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Status: Missed ${missedDaysCount} days (Critical Risk)`;
-            statusText.style.color = "var(--danger)";
-            if(docBadge) docBadge.innerHTML = `<span style="font-size: 12px; color: var(--danger); font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> Critical Adherence Risk: Discuss missing doses!</span>`;
+    function sendPatientQuestion() {
+        let txt = document.getElementById('patientQuestionInput').value.trim();
+        if(txt) {
+            let box = document.getElementById('patientChatBox');
+            box.innerHTML += `<div class="msg-bubble msg-outgoing"><b>You:</b> ${txt}</div>`;
+            document.getElementById('patientQuestionInput').value = '';
+            box.scrollTop = box.scrollHeight;
+            alert("Your question has been sent to Dr. Robert Chase!");
         }
     }
 
@@ -549,20 +662,18 @@
     function openDoctorPatientModal(name, email, specialty, medsArray) {
         document.getElementById('modalPatientName').innerText = name + " Profile";
         let content = document.getElementById('modalPatientContent');
-        
         let medsHtml = medsArray.map(m => `<div class="med-row"><span>${m}</span><i class="fa-solid fa-pills" style="color:var(--secondary)"></i></div>`).join('');
-        let adherenceNote = missedDaysCount >= 4 
-            ? `<div class="card" style="background: var(--danger-light); border-left: 4px solid var(--danger);"><b style="color:var(--danger)">⚠️ Clinical Discussion Required:</b> Patient missed ${missedDaysCount} days of medication. Discuss adherence barrier at next appointment.</div>`
-            : `<div class="card" style="background: var(--secondary-light); border-left: 4px solid var(--secondary);"><b style="color:var(--secondary)">✅ Adherence OK:</b> Patient follows prescribed regimen.</div>`;
 
         content.innerHTML = `
-            ${adherenceNote}
-            <div class="card">
-                <p style="font-size: 13px; margin-bottom: 6px;"><b>Email:</b> ${email}</p>
-                <p style="font-size: 13px; margin-bottom: 6px;"><b>Specialty Focus:</b> ${specialty}</p>
+            <div class="card" style="background: var(--secondary-light); border-left: 4px solid var(--secondary);">
+                <b style="color:var(--secondary)">✅ Adherence Status:</b> Patient follows regular regimen.
             </div>
             <div class="card">
-                <h4 style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-list-check"></i> All Prescribed Medications</h4>
+                <p style="font-size: 13px; margin-bottom: 6px;"><b>Email:</b> ${email}</p>
+                <p style="font-size: 13px; margin-bottom: 6px;"><b>Specialty:</b> ${specialty}</p>
+            </div>
+            <div class="card">
+                <h4 style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-list-check"></i> Prescribed Medications</h4>
                 ${medsHtml}
             </div>
             <button class="btn btn-doc" onclick="openDoctorChat('${name}')"><i class="fa-solid fa-comment-medical"></i> Open Direct Chat</button>
@@ -588,8 +699,8 @@
                 <p style="font-size: 13px; color: #7f1d1d; margin-top: 6px;">${match.patientExplanation}</p>
             </div>`;
         } else {
-            res.innerHTML = `<div class="card" style="border-left: 4px solid var(--secondary); background: var(--secondary-light);">
-                <b style="color: var(--secondary); font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Safe Combination</b>
+            res.innerHTML = `<div class="card" style="border-left: 4px solid var(--primary); background: var(--primary-light);">
+                <b style="color: var(--primary); font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Safe Combination</b>
                 <p style="font-size: 13px; color: #134e4a; margin-top: 6px;">No severe adverse interactions found.</p>
             </div>`;
         }
@@ -613,14 +724,6 @@
                 <b>Severity: NONE / LOW</b><br>
                 <p style="font-size: 12px; margin-top: 6px;">No pharmacological antagonism recorded.</p>
             </div>`;
-        }
-    }
-
-    function addPatientMed() {
-        let med = prompt("Enter medication name and dosage:");
-        if(med) {
-            let list = document.getElementById('patientMedsListContainer');
-            list.innerHTML += `<div class="med-row"><div><b>${med}</b> <span class="tag tag-spec">Multi-Specialty</span></div><i class="fa-solid fa-circle-check" style="color:var(--primary)"></i></div>`;
         }
     }
 </script>
