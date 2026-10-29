@@ -61,11 +61,13 @@
         .med-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
         .med-row:last-child { border-bottom: none; }
 
+        /* Рабочая сетка календаря */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin-top: 8px; }
         .cal-day-name { font-size: 10px; font-weight: 700; color: var(--text-sub); }
-        .cal-cell { aspect-ratio: 1; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); border: 1px solid var(--border); }
-        .cal-cell.taken { background: #d1fae5; color: #065f46; border-color: #34d399; }
-        .cal-cell.missed { background: var(--danger-light); color: var(--danger); }
+        .cal-cell { aspect-ratio: 1; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); border: 1px solid var(--border); transition: 0.1s; user-select: none; }
+        .cal-cell:hover { border-color: var(--primary); }
+        .cal-cell.taken { background: #d1fae5 !important; color: #065f46 !important; border-color: #34d399 !important; }
+        .cal-cell.missed { background: var(--danger-light) !important; color: var(--danger) !important; border-color: #f87171 !important; }
 
         .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 100; }
         .nav-item { text-align: center; color: var(--text-sub); font-size: 10px; font-weight: 500; cursor: pointer; flex: 1; }
@@ -162,12 +164,12 @@
     <!-- Patient Calendar (Fully Working Interactive) -->
     <div id="p-calendar" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Adherence Calendar</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Tap any day to mark intake status</p>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Tap any day to toggle intake (Green = Taken, Red = Missed)</p>
         <div class="card">
             <div class="calendar-grid" id="patientCalendarGrid">
-                <!-- Dynamic generation -->
+                <!-- Dynamically populated clickable days -->
             </div>
-            <p id="calStatusMessage" style="font-size: 12px; font-weight: 600; color: var(--primary); margin-top: 12px; text-align: center;">Status: Regular Intake</p>
+            <p id="calStatusMessage" style="font-size: 12px; font-weight: 600; color: var(--primary); margin-top: 14px; text-align: center;">Status: Regular Intake (Adherent)</p>
         </div>
     </div>
 
@@ -303,7 +305,7 @@
         </div>
     </div>
 
-    <!-- Doctor Patients List (Dynamic & Deletable) -->
+    <!-- Doctor Patients List -->
     <div id="d-patients" class="screen">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h3 style="font-size: 16px; font-weight: 700;">Patients Overview</h3>
@@ -319,7 +321,7 @@
         </div>
     </div>
 
-    <!-- Doctor Check Interactions (Using Database) -->
+    <!-- Doctor Check Interactions -->
     <div id="d-checker" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Clinical Interaction Analysis</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Database safety grading & mechanisms</p>
@@ -377,7 +379,7 @@
         </div>
     </div>
 
-    <!-- FULLSCREEN DOCTOR PATIENT MODAL WITH DELETE BUTTON -->
+    <!-- FULLSCREEN DOCTOR PATIENT MODAL -->
     <div id="docPatientDetailScreen" class="tg-fullscreen">
         <div class="tg-header">
             <i class="fa-solid fa-arrow-left" style="cursor:pointer; font-size:18px;" onclick="closeDoctorPatientModal()"></i>
@@ -507,7 +509,7 @@
         if(screenId === 'd-profile') items[4].classList.add('active-doc');
     }
 
-    // Fully Functional Interactive Calendar
+    // Fully Functional Interactive Calendar Logic
     function buildCalendar() {
         let grid = document.getElementById('patientCalendarGrid');
         grid.innerHTML = `
@@ -515,16 +517,19 @@
         `;
         for(let i = 1; i <= 31; i++) {
             let cell = document.createElement('div');
-            cell.className = 'cal-cell' + (i === 15 ? ' today-sel taken' : (i < 15 ? ' taken' : ''));
+            cell.className = 'cal-cell' + (i <= 15 ? ' taken' : '');
             cell.innerText = i;
+            
+            // Нажатие на день календаря меняет его состояние (принято / пропущено)
             cell.onclick = function() {
                 if(cell.classList.contains('taken')) {
                     cell.classList.remove('taken');
                     cell.classList.add('missed');
                     document.getElementById('calStatusMessage').innerText = "Status: Missed doses detected (Irregular)";
                     document.getElementById('calStatusMessage').style.color = "var(--danger)";
-                } else {
+                } else if(cell.classList.contains('missed')) {
                     cell.classList.remove('missed');
+                } else {
                     cell.classList.add('taken');
                     document.getElementById('calStatusMessage').innerText = "Status: Regular Intake (Adherent)";
                     document.getElementById('calStatusMessage').style.color = "var(--primary)";
