@@ -28,38 +28,31 @@
         
         .phone-frame { width: 410px; height: 860px; background: var(--bg-main); border-radius: 44px; border: 10px solid #1e293b; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }
         
-        /* App Header with 9:41 time like design */
         .app-header { background: white; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
         .top-status { font-size: 12px; font-weight: 600; color: var(--text-main); }
         
-        /* Screens */
         .screen { display: none; flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 90px; }
         .screen.active { display: block; }
 
-        /* Fullscreen Sub-screens */
         .tg-fullscreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 150; display: none; flex-direction: column; }
         .tg-header { background: white; padding: 16px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); }
         .tg-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 
-        /* Cards & Components */
         .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
         
-        /* Patient & Doctor Banners */
         .banner-patient { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius); padding: 18px; margin-bottom: 14px; color: #065f46; }
         .banner-doctor { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius); padding: 18px; margin-bottom: 14px; color: #0369a1; }
 
-        /* Buttons */
         .btn { background: var(--primary); color: white; border: none; width: 100%; padding: 12px; border-radius: 14px; font-weight: 600; cursor: pointer; font-size: 13px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-doc { background: var(--secondary); }
+        .btn-danger { background: var(--danger); }
 
         .input-group { margin-bottom: 12px; }
         .input-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
         .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; outline: none; background: #fff; color: var(--text-main); }
 
-        /* Grid shortcuts */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
-        .shortcut-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; cursor: pointer; box-shadow: var(--shadow); transition: 0.1s; }
-        .shortcut-card:active { transform: scale(0.98); }
+        .shortcut-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; cursor: pointer; box-shadow: var(--shadow); }
 
         .tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }
         .tag-spec { background: #e0e7ff; color: #4338ca; }
@@ -67,14 +60,12 @@
         .med-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
         .med-row:last-child { border-bottom: none; }
 
-        /* Calendar Grid */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin-top: 8px; }
         .cal-day-name { font-size: 10px; font-weight: 700; color: var(--text-sub); }
         .cal-cell { aspect-ratio: 1; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); border: 1px solid var(--border); }
         .cal-cell.taken { background: #d1fae5; color: #065f46; border-color: #34d399; }
         .cal-cell.today-sel { border: 2px solid var(--primary) !important; font-weight: 700; }
 
-        /* Bottom Nav Bar */
         .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 100; }
         .nav-item { text-align: center; color: var(--text-sub); font-size: 10px; font-weight: 500; cursor: pointer; flex: 1; }
         .nav-item i { font-size: 18px; display: block; margin-bottom: 3px; }
@@ -87,7 +78,6 @@
 <body>
 
 <div class="phone-frame">
-    <!-- App Header with 9:41 time -->
     <div class="app-header">
         <span class="top-status">9:41</span>
         <div style="display: flex; gap: 8px; color: #64748b; font-size: 13px;">
@@ -97,7 +87,7 @@
         </div>
     </div>
 
-    <!-- 0. REGISTRATION / AUTHENTICATION SCREEN -->
+    <!-- AUTH SCREEN -->
     <div id="screen-auth" class="screen active" style="padding-top: 40px;">
         <div style="text-align: center; margin-bottom: 24px;">
             <div style="width: 60px; height: 60px; background: var(--primary); color: white; font-size: 28px; margin: 0 auto 12px; border-radius: 18px; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-shield-heart"></i></div>
@@ -108,7 +98,7 @@
         <div class="card">
             <div class="input-group">
                 <label>Full Name</label>
-                <input type="text" id="regName" placeholder="Enter your name (e.g. Anna Smith)">
+                <input type="text" id="regName" placeholder="Enter your name">
             </div>
             <div class="input-group">
                 <label>Gmail Address</label>
@@ -126,7 +116,6 @@
     </div>
 
     <!-- ================= PATIENT SCREENS ================= -->
-    <!-- 1. Patient Home -->
     <div id="p-home" class="screen">
         <div class="banner-patient">
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Hello, <span class="displayUserName">Patient</span> 👋</h3>
@@ -139,15 +128,7 @@
                 <span class="tag" style="background:#d1fae5; color:#065f46;"><i class="fa-solid fa-circle-check"></i> All good!</span>
             </div>
             <h4 style="font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">May 15, 2024</h4>
-            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 10px;">You've taken all your medications</p>
-            <hr style="border:none; border-top:1px solid var(--border); margin: 8px 0;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
-                <div>
-                    <span style="font-size: 10px; color: var(--text-sub); display: block;">Next medication</span>
-                    <b style="font-size: 13px; color: var(--text-main);">Paracetamol 500 mg</b>
-                </div>
-                <span style="font-size: 12px; font-weight: 600; color: var(--primary);">10:00 AM</span>
-            </div>
+            <p style="font-size: 12px; color: var(--text-sub);">Track your daily adherence</p>
         </div>
 
         <div class="grid-2">
@@ -159,7 +140,7 @@
             <div class="shortcut-card" onclick="switchPatientTab('p-checker')">
                 <i class="fa-solid fa-shield-halved" style="font-size: 22px; color: var(--secondary); margin-bottom: 6px; display:block;"></i>
                 <b style="font-size: 13px; color: var(--text-main); display:block; margin-bottom:2px;">Check Interactions</b>
-                <span style="font-size: 10px; color: var(--text-sub);">Check drug interactions</span>
+                <span style="font-size: 10px; color: var(--text-sub);">Check safety</span>
             </div>
         </div>
 
@@ -167,50 +148,34 @@
             <div class="shortcut-card" onclick="switchPatientTab('p-effects')">
                 <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px; color: var(--warning); margin-bottom: 6px; display:block;"></i>
                 <b style="font-size: 13px; color: var(--text-main); display:block; margin-bottom:2px;">Side Effects</b>
-                <span style="font-size: 10px; color: var(--text-sub);">Learn about possible side effects</span>
+                <span style="font-size: 10px; color: var(--text-sub);">Learn about side effects</span>
             </div>
             <div class="shortcut-card" onclick="switchPatientTab('p-ask')">
                 <i class="fa-solid fa-comment-medical" style="font-size: 22px; color: var(--primary); margin-bottom: 6px; display:block;"></i>
                 <b style="font-size: 13px; color: var(--text-main); display:block; margin-bottom:2px;">Ask a Doctor</b>
-                <span style="font-size: 10px; color: var(--text-sub);">Send a question to your doctor</span>
+                <span style="font-size: 10px; color: var(--text-sub);">Send a question</span>
             </div>
         </div>
     </div>
 
-    <!-- 2. Patient Calendar Screen -->
+    <!-- Patient Calendar -->
     <div id="p-calendar" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Calendar</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">May 2024</p>
-
         <div class="card">
             <div class="calendar-grid">
                 <div class="cal-day-name">MON</div><div class="cal-day-name">TUE</div><div class="cal-day-name">WED</div><div class="cal-day-name">THU</div><div class="cal-day-name">FRI</div><div class="cal-day-name">SAT</div><div class="cal-day-name">SUN</div>
                 <div class="cal-cell" style="opacity:0.3">29</div><div class="cal-cell" style="opacity:0.3">30</div><div class="cal-cell taken">1</div><div class="cal-cell taken">2</div><div class="cal-cell taken">3</div><div class="cal-cell taken">4</div><div class="cal-cell taken">5</div>
                 <div class="cal-cell taken">6</div><div class="cal-cell taken">7</div><div class="cal-cell taken">8</div><div class="cal-cell taken">9</div><div class="cal-cell taken">10</div><div class="cal-cell taken">11</div><div class="cal-cell taken">12</div>
                 <div class="cal-cell taken">13</div><div class="cal-cell taken">14</div><div class="cal-cell taken today-sel">15</div><div class="cal-cell">16</div><div class="cal-cell">17</div><div class="cal-cell">18</div><div class="cal-cell">19</div>
-                <div class="cal-cell">20</div><div class="cal-cell">21</div><div class="cal-cell">22</div><div class="cal-cell">23</div><div class="cal-cell">24</div><div class="cal-cell">25</div><div class="cal-cell">26</div>
-                <div class="cal-cell">27</div><div class="cal-cell">28</div><div class="cal-cell">29</div><div class="cal-cell">30</div><div class="cal-cell">31</div><div class="cal-cell" style="opacity:0.3">1</div><div class="cal-cell" style="opacity:0.3">2</div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px;">Today, May 15</h4>
-            <div class="med-row">
-                <div><b>Paracetamol 500 mg</b><br><small style="color:var(--text-sub)">10:00 AM</small></div>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size: 18px;"></i>
-            </div>
-            <div class="med-row">
-                <div><b>Vitamin D3 1000 IU</b><br><small style="color:var(--text-sub)">8:00 PM</small></div>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size: 18px;"></i>
             </div>
         </div>
     </div>
 
-    <!-- 3. Patient Add Medication (+) Screen -->
+    <!-- Patient Add Medication -->
     <div id="p-add" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Add Medication</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Record new prescription</p>
-
         <div class="card">
             <div class="input-group">
                 <label>Medication Name & Dosage</label>
@@ -228,18 +193,16 @@
         </div>
     </div>
 
-    <!-- 4. Patient Ask a Doctor Screen (With Doctor Selector) -->
+    <!-- Patient Ask a Doctor -->
     <div id="p-ask" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Ask a Doctor</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Select physician and send your concern.</p>
-
         <div class="card">
             <div class="input-group">
                 <label>Select Doctor / Specialist</label>
                 <select id="selectDoctorForQ">
                     <option>Dr. Robert Chase (Cardiology)</option>
                     <option>Dr. Gregory House (Endocrinology)</option>
-                    <option>Dr. Allison Cameron (Gastroenterology)</option>
                 </select>
             </div>
             <div class="input-group">
@@ -248,49 +211,33 @@
             </div>
             <button class="btn" onclick="sendPatientQ()"><i class="fa-solid fa-paper-plane"></i> Send Question</button>
         </div>
-
-        <div class="card">
-            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px;">Chat History</h4>
-            <div id="patientChatBox" style="display:flex; flex-direction:column; gap:8px;">
-                <div style="font-size: 12px; color: var(--text-sub); background: #f8fafc; padding: 10px; border-radius: 8px;">
-                    <b>Dr. Robert Chase:</b> Hello, feel free to ask if you have any questions regarding your prescription.
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Patient Profile -->
     <div id="p-profile" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">Patient Profile</h3>
         <div class="card">
-            <p style="font-size: 13px; margin-bottom: 6px;"><b>Name:</b> <span class="displayUserName">Anna Smith</span></p>
-            <p style="font-size: 13px; margin-bottom: 14px;"><b>Email:</b> <span id="displayUserEmail">anna.smith@gmail.com</span></p>
+            <p style="font-size: 13px; margin-bottom: 6px;"><b>Name:</b> <span class="displayUserName">Patient</span></p>
+            <p style="font-size: 13px; margin-bottom: 14px;"><b>Email:</b> <span id="displayUserEmail">user@gmail.com</span></p>
             <button class="btn" style="background:var(--danger);" onclick="location.reload()">Log Out</button>
         </div>
     </div>
 
-    <!-- Patient Meds List Screen -->
+    <!-- Patient Meds List (With Delete Button) -->
     <div id="p-meds" class="screen">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h3 style="font-size: 16px; font-weight: 700;">My Medications</h3>
             <button class="btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin: 0;" onclick="switchPatientTab('p-add')"><i class="fa-solid fa-plus"></i> Add</button>
         </div>
         <div class="card" id="patientMedsListContainer">
-            <div class="med-row">
-                <div><b>Paracetamol</b> <span class="tag tag-spec">General</span><br><small style="color:var(--text-sub)">500mg</small></div>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary)"></i>
-            </div>
-            <div class="med-row">
-                <div><b>Vitamin D3</b> <span class="tag tag-spec">Endocrinology</span><br><small style="color:var(--text-sub)">1000 IU</small></div>
-                <i class="fa-solid fa-circle-check" style="color:var(--primary)"></i>
-            </div>
+            <p style="font-size: 12px; color: var(--text-sub); text-align: center; padding: 10px;">No medications added yet.</p>
         </div>
     </div>
 
     <!-- Patient Interaction Checker -->
     <div id="p-checker" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Check Interactions</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Add medications to check safety</p>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Verify safety</p>
         <div class="card">
             <div class="input-group">
                 <label>First Medication</label>
@@ -300,138 +247,76 @@
                 <label>Second Medication</label>
                 <select id="pDrug2"><option value="aspirin">Aspirin</option><option value="ibuprofen">Ibuprofen</option></select>
             </div>
-            <button class="btn" onclick="checkPatientCombo()">Check Interaction</button>
+            <button class="btn" onclick="alert('Combination checked: Safe combination.')">Check Interaction</button>
         </div>
-        <div id="patientResult"></div>
     </div>
 
-    <!-- Patient Side Effects Screen -->
+    <!-- Patient Side Effects -->
     <div id="p-effects" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Side Effects</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Learn about possible side effects</p>
-
         <div class="card" style="border-left: 4px solid var(--warning);">
             <h4 style="font-size: 13px; font-weight: 700; color: var(--warning); margin-bottom: 6px;">Common Side Effects</h4>
             <p style="font-size: 12px; color: var(--text-main); line-height: 1.6;">• Nausea<br>• Diarrhea<br>• Rash<br>• Vomiting<br>• Abdominal pain</p>
-        </div>
-
-        <div class="card" style="border-left: 4px solid var(--danger);">
-            <h4 style="font-size: 13px; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Serious Side Effects</h4>
-            <p style="font-size: 12px; color: var(--text-main); line-height: 1.6;">• Allergic reaction<br>• Severe skin reaction<br>• Clostridium difficile associated diarrhea</p>
         </div>
     </div>
 
 
     <!-- ================= DOCTOR SCREENS ================= -->
-    <!-- 1. Doctor Home -->
     <div id="d-home" class="screen">
         <div class="banner-doctor">
-            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Good morning,<br><span class="displayDocName">Dr. Smith</span> 👨‍⚕️</h3>
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Good morning,<br><span class="displayDocName">Doctor</span> 👨‍⚕️</h3>
             <p style="font-size: 12px; color: #0284c7;">Professional tools for better medication safety.</p>
         </div>
-
         <div class="grid-2" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
             <div class="card" style="margin:0; text-align:center; padding:12px; cursor:pointer;" onclick="switchDoctorTab('d-patients')">
-                <b style="font-size: 18px; color: var(--secondary); display:block;">12</b>
+                <b id="docPatientCount" style="font-size: 18px; color: var(--secondary); display:block;">0</b>
                 <span style="font-size: 10px; color: var(--text-sub);">Patients</span>
             </div>
-            <div class="card" style="margin:0; text-align:center; padding:12px; cursor:pointer;">
-                <b style="font-size: 18px; color: var(--warning); display:block;">3</b>
-                <span style="font-size: 10px; color: var(--text-sub);">Questions</span>
-            </div>
-            <div class="card" style="margin:0; text-align:center; padding:12px; cursor:pointer;">
-                <b style="font-size: 18px; color: var(--danger); display:block;">2</b>
-                <span style="font-size: 10px; color: var(--text-sub);">Alerts</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <h4 style="font-size: 13px; font-weight: 700;">Recent Patients</h4>
-                <a href="#" onclick="switchDoctorTab('d-patients'); return false;" style="font-size: 11px; color: var(--secondary); text-decoration:none;">View all</a>
-            </div>
-            <div class="med-row" style="cursor:pointer;" onclick="openDoctorPatientModal('Anna Johnson', 'anna.johnson@gmail.com', 'Cardio + Endo', ['Warfarin 5mg', 'Metformin 850mg', 'Omeprazole 20mg'])">
-                <div><b>Anna Johnson</b><br><small style="color:var(--text-sub)">Today, 9:35 AM</small></div>
-                <span class="tag" style="background:#e0e7ff; color:#4338ca;"><i class="fa-solid fa-comment"></i> 2</span>
-            </div>
-            <div class="med-row" style="cursor:pointer;" onclick="openDoctorPatientModal('Michael Brown', 'michael@gmail.com', 'Endocrinology', ['Metformin 850mg'])">
-                <div><b>Michael Brown</b><br><small style="color:var(--text-sub)">Today, 8:45 AM</small></div>
-                <span class="tag" style="background:#e0e7ff; color:#4338ca;"><i class="fa-solid fa-comment"></i> 1</span>
-            </div>
+            <div class="card" style="margin:0; text-align:center; padding:12px;"><b style="font-size: 18px; color: var(--warning); display:block;">0</b><span style="font-size: 10px; color: var(--text-sub);">Questions</span></div>
+            <div class="card" style="margin:0; text-align:center; padding:12px;"><b style="font-size: 18px; color: var(--danger); display:block;">0</b><span style="font-size: 10px; color: var(--text-sub);">Alerts</span></div>
         </div>
     </div>
 
-    <!-- 2. Doctor Patients List (Fully Clickable) -->
+    <!-- Doctor Patients List (Dynamic & Deletable) -->
     <div id="d-patients" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Patients Overview</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Click patient card to view active medications</p>
-
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Manage and monitor your patients</p>
         <div class="card" style="padding: 10px;">
             <div class="input-group" style="margin: 0;">
                 <input type="text" id="patientSearchInput" placeholder="Search patient..." onkeyup="filterPatients()" style="font-size: 12px; padding: 8px;">
             </div>
         </div>
-
         <div id="docPatientsList">
-            <div class="card patient-card" data-name="anna johnson" style="border-left: 4px solid var(--secondary); cursor:pointer;" onclick="openDoctorPatientModal('Anna Johnson', 'anna.johnson@gmail.com', 'Cardio + Endo', ['Warfarin 5mg (Cardiology)', 'Metformin 850mg (Endocrinology)', 'Omeprazole 20mg (Gastro)'])">
-                <div style="display:flex; justify-content:space-between;">
-                    <b style="font-size: 14px;">Anna Johnson</b>
-                    <span class="tag tag-spec">Cardio + Endo</span>
-                </div>
-                <p style="font-size: 11px; color: var(--text-sub); margin: 2px 0;">anna.johnson@gmail.com</p>
-                <p style="font-size: 12px; color: var(--secondary); font-weight:600;"><i class="fa-solid fa-circle-check"></i> Regular Intake (Adherent)</p>
-            </div>
-
-            <div class="card patient-card" data-name="michael brown" style="border-left: 4px solid var(--warning); cursor:pointer;" onclick="openDoctorPatientModal('Michael Brown', 'michael@gmail.com', 'Endocrinology', ['Metformin 850mg (Endocrinology)', 'Atorvastatin 20mg (Cardiology)'])">
-                <div style="display:flex; justify-content:space-between;">
-                    <b style="font-size: 14px;">Michael Brown</b>
-                    <span class="tag tag-spec">Endo</span>
-                </div>
-                <p style="font-size: 11px; color: var(--text-sub); margin: 2px 0;">michael@gmail.com</p>
-                <p style="font-size: 12px; color: var(--warning); font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> Irregular Intake (Missed 2 days)</p>
-            </div>
+            <p style="font-size: 12px; color: var(--text-sub); text-align: center; padding: 10px;">No patients registered yet.</p>
         </div>
     </div>
 
-    <!-- 3. Doctor Check Interactions -->
+    <!-- Doctor Check Interactions -->
     <div id="d-checker" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Check Interactions</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Select medications to check</p>
-
         <div class="card">
             <div class="input-group">
                 <label>Select medications</label>
                 <select style="margin-bottom: 8px;"><option>Amoxicillin 500 mg</option></select>
                 <select><option>Warfarin 5 mg</option></select>
             </div>
-            <button class="btn btn-doc" onclick="runDocInteractionCheck()">Check interaction</button>
+            <button class="btn btn-doc" onclick="document.getElementById('docInteractionResult').style.display='block'">Check interaction</button>
         </div>
-
-        <div class="card" id="docInteractionResult" style="border-left: 4px solid var(--warning); background: #fffbeb;">
+        <div class="card" id="docInteractionResult" style="display:none; border-left: 4px solid var(--warning); background: #fffbeb;">
             <span class="tag" style="background:#fef3c7; color:#d97706; margin-bottom: 6px;">Moderate Interaction</span>
-            <p style="font-size: 12px; color: var(--text-main); line-height: 1.5; margin-bottom: 8px;">Amoxicillin may enhance the effect of Warfarin and increase the risk of bleeding.</p>
-            <b style="font-size: 12px; color: var(--text-main); display:block; margin-bottom:2px;">Recommendation</b>
-            <p style="font-size: 11px; color: var(--text-sub);">Monitor INR levels more frequently and adjust dosage if necessary.</p>
+            <p style="font-size: 12px; color: var(--text-main); line-height: 1.5;">Amoxicillin may enhance the effect of Warfarin and increase bleeding risk.</p>
         </div>
     </div>
 
-    <!-- 4. Doctor Side Effects Reference -->
+    <!-- Doctor Side Effects -->
     <div id="d-effects" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Side Effects</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Reference guide for adverse drug reactions</p>
-
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Reference guide</p>
         <div class="card">
-            <div class="input-group">
-                <label>Select medication</label>
-                <select><option>Amoxicillin 500 mg</option></select>
-            </div>
-            <h4 style="font-size: 13px; font-weight: 700; color: var(--secondary); margin-top: 10px; margin-bottom: 6px;">Common Side Effects</h4>
+            <h4 style="font-size: 13px; font-weight: 700; color: var(--secondary); margin-bottom: 6px;">Common Side Effects</h4>
             <p style="font-size: 12px; color: var(--text-main); line-height: 1.6;">• Nausea<br>• Diarrhea<br>• Rash<br>• Vomiting<br>• Abdominal pain</p>
-        </div>
-
-        <div class="card" style="border-left: 4px solid var(--danger);">
-            <h4 style="font-size: 13px; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Serious Side Effects</h4>
-            <p style="font-size: 12px; color: var(--text-main); line-height: 1.6;">• Allergic reaction<br>• Severe skin reaction<br>• Clostridium difficile associated diarrhea</p>
         </div>
     </div>
 
@@ -439,13 +324,13 @@
     <div id="d-profile" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">Doctor Profile</h3>
         <div class="card">
-            <p style="font-size: 13px; margin-bottom: 6px;"><b>Physician:</b> <span class="displayDocName">Dr. Smith</span></p>
-            <p style="font-size: 13px; margin-bottom: 14px;"><b>Email:</b> <span id="displayDocEmail">dr.smith@medcheck.com</span></p>
+            <p style="font-size: 13px; margin-bottom: 6px;"><b>Physician:</b> <span class="displayDocName">Doctor</span></p>
+            <p style="font-size: 13px; margin-bottom: 14px;"><b>Email:</b> <span id="displayDocEmail">doctor@medcheck.com</span></p>
             <button class="btn" style="background:var(--danger);" onclick="location.reload()">Log Out</button>
         </div>
     </div>
 
-    <!-- ================= FULLSCREEN DOCTOR PATIENT MODAL ================= -->
+    <!-- FULLSCREEN DOCTOR PATIENT MODAL WITH DELETE BUTTON -->
     <div id="docPatientDetailScreen" class="tg-fullscreen">
         <div class="tg-header">
             <i class="fa-solid fa-arrow-left" style="cursor:pointer; font-size:18px;" onclick="closeDoctorPatientModal()"></i>
@@ -454,8 +339,7 @@
         <div class="tg-body" id="modalPatientContent"></div>
     </div>
 
-    <!-- ================= BOTTOM NAVIGATION BARS ================= -->
-    <!-- Patient Bottom Nav Bar -->
+    <!-- BOTTOM NAVIGATION BARS -->
     <div class="nav-bar" id="patientNavBar" style="display:none;">
         <div class="nav-item active-pat" onclick="switchPatientTab('p-home')"><i class="fa-solid fa-house"></i>Home</div>
         <div class="nav-item" onclick="switchPatientTab('p-calendar')"><i class="fa-solid fa-calendar-days"></i>Calendar</div>
@@ -464,7 +348,6 @@
         <div class="nav-item" onclick="switchPatientTab('p-profile')"><i class="fa-solid fa-user"></i>Profile</div>
     </div>
 
-    <!-- Doctor Bottom Nav Bar -->
     <div class="nav-bar" id="doctorNavBar" style="display:none;">
         <div class="nav-item active-doc" onclick="switchDoctorTab('d-home')"><i class="fa-solid fa-house"></i>Home</div>
         <div class="nav-item" onclick="switchDoctorTab('d-patients')"><i class="fa-solid fa-users"></i>Patients</div>
@@ -476,14 +359,17 @@
 
 <script>
     let activeUser = { name: '', email: '', role: 'patient' };
+    let patientsList = [
+        { name: "Anna Johnson", email: "anna.johnson@gmail.com", specialty: "Cardio + Endo", meds: ["Warfarin 5mg (Cardiology)", "Metformin 850mg (Endocrinology)"] },
+        { name: "Michael Brown", email: "michael@gmail.com", specialty: "Endocrinology", meds: ["Metformin 850mg (Endocrinology)"] }
+    ];
 
     function registerUser() {
-        let name = document.getElementById('regName').value.trim() || 'Anna Smith';
+        let name = document.getElementById('regName').value.trim() || 'Patient User';
         let email = document.getElementById('regEmail').value.trim() || 'user@gmail.com';
         let role = document.getElementById('regRole').value;
 
         activeUser = { name, email, role };
-
         document.getElementById('screen-auth').classList.remove('active');
 
         if(role === 'patient') {
@@ -497,6 +383,7 @@
             document.getElementById('displayDocEmail').innerText = email;
             document.getElementById('patientNavBar').style.display = 'none';
             document.getElementById('doctorNavBar').style.display = 'flex';
+            renderDoctorPatients();
             switchDoctorTab('d-home');
         }
     }
@@ -527,12 +414,21 @@
         if(screenId === 'd-profile') items[4].classList.add('active-doc');
     }
 
+    // Patient adds medication with DELETE button
     function saveNewMed() {
-        let med = document.getElementById('newMedInput').value;
+        let med = document.getElementById('newMedInput').value.trim();
         let spec = document.getElementById('newMedSpecialty').value;
         if(med) {
-            let list = document.getElementById('patientMedsListContainer');
-            list.innerHTML += `<div class="med-row"><div><b>${med}</b> <span class="tag tag-spec">${spec}</span></div><i class="fa-solid fa-circle-check" style="color:var(--primary)"></i></div>`;
+            let container = document.getElementById('patientMedsListContainer');
+            if(container.innerHTML.includes('No medications added yet')) container.innerHTML = '';
+            
+            let rowId = 'med_' + Date.now();
+            container.innerHTML += `
+                <div class="med-row" id="${rowId}">
+                    <div><b>${med}</b> <span class="tag tag-spec">${spec}</span></div>
+                    <button onclick="document.getElementById('${rowId}').remove()" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:14px;" title="Delete medication"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
             alert("Medication added successfully!");
             document.getElementById('newMedInput').value = '';
             switchPatientTab('p-meds');
@@ -543,11 +439,34 @@
         let docName = document.getElementById('selectDoctorForQ').value;
         let txt = document.getElementById('patientQInput').value.trim();
         if(txt) {
-            let box = document.getElementById('patientChatBox');
-            box.innerHTML += `<div style="font-size:12px; background:var(--primary-light); color:#065f46; padding:10px; border-radius:8px; align-self:flex-end;"><b>To ${docName}:</b> ${txt}</div>`;
-            document.getElementById('patientQInput').value = '';
             alert("Your question has been sent to " + docName + "!");
+            document.getElementById('patientQInput').value = '';
         }
+    }
+
+    // Render doctor patients dynamically
+    function renderDoctorPatients() {
+        let listContainer = document.getElementById('docPatientsList');
+        document.getElementById('docPatientCount').innerText = patientsList.length;
+
+        if(patientsList.length === 0) {
+            listContainer.innerHTML = `<p style="font-size: 12px; color: var(--text-sub); text-align: center; padding: 10px;">No patients registered yet.</p>`;
+            return;
+        }
+
+        listContainer.innerHTML = '';
+        patientsList.forEach((p, index) => {
+            listContainer.innerHTML += `
+                <div class="card patient-card" data-name="${p.name.toLowerCase()}" style="border-left: 4px solid var(--secondary); cursor:pointer;" onclick="openPatientModal(${index})">
+                    <div style="display:flex; justify-content:space-between;">
+                        <b style="font-size: 14px;">${p.name}</b>
+                        <span class="tag tag-spec">${p.specialty}</span>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-sub); margin: 2px 0;">${p.email}</p>
+                    <p style="font-size: 12px; color: var(--secondary); font-weight:600;"><i class="fa-solid fa-circle-check"></i> Active Patient</p>
+                </div>
+            `;
+        });
     }
 
     function filterPatients() {
@@ -560,38 +479,42 @@
         });
     }
 
-    function openDoctorPatientModal(name, email, specialty, medsArray) {
-        document.getElementById('modalPatientName').innerText = name + " Details";
+    // Open Doctor Patient Modal with DELETE PATIENT button
+    function openPatientModal(index) {
+        let p = patientsList[index];
+        document.getElementById('modalPatientName').innerText = p.name + " Details";
         let content = document.getElementById('modalPatientContent');
 
-        let medsHtml = medsArray.map(m => `<div class="med-row"><span>${m}</span><i class="fa-solid fa-pills" style="color:var(--secondary)"></i></div>`).join('');
+        let medsHtml = p.meds.map(m => `<div class="med-row"><span>${m}</span><i class="fa-solid fa-pills" style="color:var(--secondary)"></i></div>`).join('');
 
         content.innerHTML = `
             <div class="card" style="background: var(--secondary-light); border-left: 4px solid var(--secondary);">
                 <b style="color:var(--secondary)">✅ Adherence Status:</b> Regular Intake (Adherent)
             </div>
             <div class="card">
-                <p style="font-size: 13px; margin-bottom: 6px;"><b>Email:</b> ${email}</p>
-                <p style="font-size: 13px; margin-bottom: 6px;"><b>Specialty focus:</b> ${specialty}</p>
+                <p style="font-size: 13px; margin-bottom: 6px;"><b>Email:</b> ${p.email}</p>
+                <p style="font-size: 13px; margin-bottom: 6px;"><b>Specialty focus:</b> ${p.specialty}</p>
             </div>
             <div class="card">
-                <h4 style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-list-check"></i> Prescribed Medications (Multi-Specialty)</h4>
+                <h4 style="font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-list-check"></i> Prescribed Medications</h4>
                 ${medsHtml}
             </div>
+            <button class="btn btn-danger" onclick="deletePatient(${index})"><i class="fa-solid fa-user-slash"></i> Delete Patient</button>
         `;
         document.getElementById('docPatientDetailScreen').style.display = 'flex';
     }
 
+    function deletePatient(index) {
+        if(confirm("Are you sure you want to delete this patient?")) {
+            patientsList.splice(index, 1);
+            closeDoctorPatientModal();
+            renderDoctorPatients();
+            alert("Patient successfully removed.");
+        }
+    }
+
     function closeDoctorPatientModal() {
         document.getElementById('docPatientDetailScreen').style.display = 'none';
-    }
-
-    function checkPatientCombo() {
-        alert("Combination checked: Safe combination.");
-    }
-
-    function runDocInteractionCheck() {
-        document.getElementById('docInteractionResult').style.display = 'block';
     }
 </script>
 </body>
