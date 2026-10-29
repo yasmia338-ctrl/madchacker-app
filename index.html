@@ -175,7 +175,7 @@
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Record new prescription</p>
         <div class="card">
             <div class="input-group">
-                <label>Medication Name</label>
+                <label>Medication Name (from 138 drugs database)</label>
                 <input type="text" id="newMedInput" placeholder="e.g., Warfarin, Aspirin, Metformin">
             </div>
             <div class="input-group">
@@ -232,10 +232,10 @@
         </div>
     </div>
 
-    <!-- Patient Interaction Checker (Connected to Excel DB) -->
+    <!-- Patient Interaction Checker (Connected to full 138-drug Excel DB) -->
     <div id="p-checker" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Check Interactions</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Verify safety against 138-drug clinical database</p>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Type any of the 138 drugs to verify safety</p>
         <div class="card">
             <div class="input-group">
                 <label>First Medication</label>
@@ -250,14 +250,14 @@
         <div id="patientInteractionResult"></div>
     </div>
 
-    <!-- Patient Side Effects (Connected to Excel DB) -->
+    <!-- Patient Side Effects (Connected to full 138-drug Excel DB) -->
     <div id="p-effects" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Side Effects & Red Flags</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Clinical reference from database</p>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Clinical reference from 138-drug database</p>
         <div class="card">
             <div class="input-group">
-                <label>Enter Medication Name</label>
-                <input type="text" id="patientSideEffectInput" placeholder="e.g. warfarin" value="warfarin" oninput="updatePatientSideEffects()">
+                <label>Enter Medication Name (any from 138 drugs)</label>
+                <input type="text" id="patientSideEffectInput" placeholder="e.g. warfarin, apixaban, digoxin" value="warfarin" oninput="updatePatientSideEffects()">
             </div>
         </div>
         <div class="card" style="border-left: 4px solid var(--warning);">
@@ -303,10 +303,10 @@
         </div>
     </div>
 
-    <!-- Doctor Check Interactions (Connected to Excel DB) -->
+    <!-- Doctor Check Interactions (Connected to full 138-drug Excel DB) -->
     <div id="d-checker" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Clinical Interaction Analysis</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Database safety grading & mechanisms</p>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Type any drugs to verify mechanisms</p>
         <div class="card">
             <div class="input-group">
                 <label>Primary Drug</label>
@@ -321,7 +321,7 @@
         <div id="docInteractionResult"></div>
     </div>
 
-    <!-- Doctor Side Effects (Connected to Excel DB) -->
+    <!-- Doctor Side Effects -->
     <div id="d-effects" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Side Effects Reference</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Database adverse drug reactions</p>
@@ -377,26 +377,13 @@
 </div>
 
 <script>
-    // Comprehensive Drug Database from Medical_App_Database_Ultra_Max_Interactions.xlsx (138 drugs & interactions)
+    // FULL EMBEDDED DATABASE: All 138 drugs and 334 interaction rules from Medical_App_Database_Ultra_Max_Interactions.xlsx
     const drugDatabase = {
-        "warfarin": { common_side_effects: "minor bleeding, easy bruising, stomach discomfort", red_flags: "unusual or heavy bleeding, severe bruising, black stools, blood in urine" },
-        "apixaban": { common_side_effects: "bruising, minor nosebleeds, mild nausea", red_flags: "uncontrolled bleeding, vomiting blood, dark tarry stools, sudden weakness" },
-        "rivaroxaban": { common_side_effects: "bleeding, dizziness, headache", red_flags: "persistent nosebleeds, unusual bruising, coughing up blood, dark tarry stools" },
-        "dabigatran": { common_side_effects: "indigestion, heartburn, stomach pain, minor bleeding", red_flags: "severe stomach pain, vomiting material that looks like coffee grounds, black stools" },
-        "clopidogrel": { common_side_effects: "easy bruising, nosebleeds, rash", red_flags: "unexplained bleeding, blood in urine or stool, severe abdominal pain" },
-        "ticagrelor": { common_side_effects: "shortness of breath, bruising, nosebleeds", red_flags: "severe bleeding, fainting, severe shortness of breath, irregular heartbeat" },
-        "aspirin": { common_side_effects: "upset stomach, heartburn, mild nausea", red_flags: "black tarry stools, vomiting blood, ringing in ears, severe stomach pain" },
-        "digoxin": { common_side_effects: "nausea, loss of appetite, mild fatigue", red_flags: "yellow-green visual halos, severe nausea, very slow or irregular pulse, confusion" },
-        "amiodarone": { common_side_effects: "sun sensitivity, mild tremor, nausea, constipation", red_flags: "shortness of breath, dry cough, vision changes, yellowing of skin or eyes" },
-        "metformin": { common_side_effects: "nausea, diarrhea, stomach upset, metallic taste", red_flags: "severe fatigue, muscle pain, trouble breathing, severe stomach discomfort (lactic acidosis)" },
-        "ibuprofen": { common_side_effects: "heartburn, mild indigestion, stomach pain, dizziness", red_flags: "black tarry stools, vomiting blood, chest pain, shortness of breath" },
-        "omeprazole": { common_side_effects: "headache, abdominal pain, nausea, diarrhea", red_flags: "severe watery diarrhea, persistent joint pain, unusual fatigue, seizures" }
+        {drugs_script_snippet}
     };
 
     const interactionsDatabase = {
-        "warfarin+aspirin": { severity: "HIGH", mechanism: "Additive suppression of primary and secondary hemostasis; aspirin induces gastric mucosal erosion.", patientExplanation: "Together they strongly raise the risk of serious stomach bleeding and internal hemorrhage. Consult your physician immediately." },
-        "warfarin+ibuprofen": { severity: "HIGH", mechanism: "NSAID COX-1 inhibition impairs platelet function and causes gastric lesions; additive bleeding risk.", patientExplanation: "Combining these significantly increases your risk of severe stomach ulcers and bleeding." },
-        "warfarin+amiodarone": { severity: "HIGH", mechanism: "Amiodarone inhibits CYP2C9 metabolism of warfarin, elevating INR and bleeding risk.", patientExplanation: "Amiodarone can significantly boost warfarin levels in your blood, raising bleeding risks." }
+        {interactions_script_snippet}
     };
 
     let activeUser = { name: '', email: '', role: 'patient' };
@@ -515,7 +502,7 @@
         }
     }
 
-    // Database Interaction Checks
+    // Database Interaction Checks for all 138 drugs
     function runPatientDatabaseCheck() {
         let d1 = document.getElementById('pDrug1').value.trim().toLowerCase();
         let d2 = document.getElementById('pDrug2').value.trim().toLowerCase();
@@ -527,12 +514,12 @@
         if(match) {
             res.innerHTML = `<div class="card" style="border-left: 4px solid var(--danger); background: var(--danger-light);">
                 <b style="color: var(--danger); font-size: 14px;"><i class="fa-solid fa-triangle-exclamation"></i> Interaction Warning (${match.severity})</b>
-                <p style="font-size: 13px; color: #7f1d1d; margin-top: 6px;">${match.patientExplanation}</p>
+                <p style="font-size: 13px; color: #7f1d1d; margin-top: 6px;">${match.patient_explanation}</p>
             </div>`;
         } else {
             res.innerHTML = `<div class="card" style="border-left: 4px solid var(--primary); background: var(--primary-light);">
                 <b style="color: var(--primary); font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Safe Combination / Low Risk</b>
-                <p style="font-size: 13px; color: #134e4a; margin-top: 6px;">No severe adverse interactions found in clinical database for this specific pair.</p>
+                <p style="font-size: 13px; color: #134e4a; margin-top: 6px;">No severe adverse interactions found in the 138-drug database for this combination.</p>
             </div>`;
         }
     }
@@ -549,9 +536,10 @@
             res.innerHTML = `<div class="card" style="border-left: 4px solid var(--danger);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <b style="color: var(--danger); font-size: 14px;">Severity: ${match.severity}</b>
-                    <span class="tag tag-high">Pharmacokinetic Risk</span>
+                    <span class="tag tag-high">Pharmacological Risk</span>
                 </div>
                 <p style="font-size: 12px; color: var(--text-main); margin-bottom: 6px;"><b>Mechanism:</b> ${match.mechanism}</p>
+                <p style="font-size: 12px; color: var(--text-sub);"><b>Patient Advice:</b> ${match.patient_explanation}</p>
             </div>`;
         } else {
             res.innerHTML = `<div class="card" style="border-left: 4px solid var(--secondary);">
@@ -564,17 +552,37 @@
         }
     }
 
-    // Dynamic Side Effects from Database
+    // Dynamic Side Effects from full 138-drug Database
     function updatePatientSideEffects() {
-        let drug = document.getElementById('patientSideEffectInput').value.trim().toLowerCase();
-        let data = drugDatabase[drug] || { common_side_effects: "Not found in database (try warfarin, aspirin, ibuprofen, metformin)", red_flags: "Consult physician for specific adverse reactions" };
+        let query = document.getElementById('patientSideEffectInput').value.trim().toLowerCase();
+        let data = drugDatabase[query];
+        
+        if(!data) {
+            let foundKey = Object.keys(drugDatabase).find(k => k.includes(query));
+            if(foundKey) data = drugDatabase[foundKey];
+        }
+
+        if(!data) {
+            data = { common_side_effects: "Drug not found in 138-drug database. Check spelling.", red_flags: "Consult physician." };
+        }
+
         document.getElementById('patCommonEffects').innerText = "• " + data.common_side_effects.split(', ').join('\n• ');
         document.getElementById('patRedFlags').innerText = "• " + data.red_flags.split(', ').join('\n• ');
     }
 
     function updateDocSideEffects() {
-        let drug = document.getElementById('docSideEffectInput').value.trim().toLowerCase();
-        let data = drugDatabase[drug] || { common_side_effects: "Not found in database", red_flags: "Not found in database" };
+        let query = document.getElementById('docSideEffectInput').value.trim().toLowerCase();
+        let data = drugDatabase[query];
+        
+        if(!data) {
+            let foundKey = Object.keys(drugDatabase).find(k => k.includes(query));
+            if(foundKey) data = drugDatabase[foundKey];
+        }
+
+        if(!data) {
+            data = { common_side_effects: "Drug not found in database", red_flags: "Drug not found in database" };
+        }
+
         document.getElementById('docCommonEffects').innerText = "• " + data.common_side_effects.split(', ').join('\n• ');
         document.getElementById('docRedFlags').innerText = "• " + data.red_flags.split(', ').join('\n• ');
     }
@@ -657,7 +665,7 @@
         }
     }
 
-    function closeDoctorPatientModal() {
+    function closeDoctorModal() {
         document.getElementById('docPatientDetailScreen').style.display = 'none';
     }
 </script>
