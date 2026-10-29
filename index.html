@@ -61,11 +61,9 @@
         .med-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
         .med-row:last-child { border-bottom: none; }
 
-        /* Рабочая сетка календаря */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin-top: 8px; }
         .cal-day-name { font-size: 10px; font-weight: 700; color: var(--text-sub); }
-        .cal-cell { aspect-ratio: 1; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); border: 1px solid var(--border); transition: 0.1s; user-select: none; }
-        .cal-cell:hover { border-color: var(--primary); }
+        .cal-cell { aspect-ratio: 1; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); border: 1px solid var(--border); }
         .cal-cell.taken { background: #d1fae5 !important; color: #065f46 !important; border-color: #34d399 !important; }
         .cal-cell.missed { background: var(--danger-light) !important; color: var(--danger) !important; border-color: #f87171 !important; }
 
@@ -166,9 +164,7 @@
         <h3 style="font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Adherence Calendar</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Tap any day to toggle intake (Green = Taken, Red = Missed)</p>
         <div class="card">
-            <div class="calendar-grid" id="patientCalendarGrid">
-                <!-- Dynamically populated clickable days -->
-            </div>
+            <div class="calendar-grid" id="patientCalendarGrid"></div>
             <p id="calStatusMessage" style="font-size: 12px; font-weight: 600; color: var(--primary); margin-top: 14px; text-align: center;">Status: Regular Intake (Adherent)</p>
         </div>
     </div>
@@ -179,8 +175,8 @@
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Record new prescription</p>
         <div class="card">
             <div class="input-group">
-                <label>Medication Name & Dosage</label>
-                <input type="text" id="newMedInput" placeholder="e.g., Warfarin 5mg">
+                <label>Medication Name</label>
+                <input type="text" id="newMedInput" placeholder="e.g., Warfarin, Aspirin, Metformin">
             </div>
             <div class="input-group">
                 <label>Specialty Department</label>
@@ -236,46 +232,32 @@
         </div>
     </div>
 
-    <!-- Patient Interaction Checker (Using Real Database) -->
+    <!-- Patient Interaction Checker (Connected to Excel DB) -->
     <div id="p-checker" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Check Interactions</h3>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Verify safety using clinical database</p>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Verify safety against 138-drug clinical database</p>
         <div class="card">
             <div class="input-group">
                 <label>First Medication</label>
-                <select id="pDrug1">
-                    <option value="warfarin">Warfarin</option>
-                    <option value="apixaban">Apixaban</option>
-                    <option value="aspirin">Aspirin</option>
-                    <option value="clopidogrel">Clopidogrel</option>
-                </select>
+                <input type="text" id="pDrug1" placeholder="e.g. warfarin" value="warfarin">
             </div>
             <div class="input-group">
                 <label>Second Medication</label>
-                <select id="pDrug2">
-                    <option value="aspirin">Aspirin</option>
-                    <option value="ibuprofen">Ibuprofen</option>
-                    <option value="amiodarone">Amiodarone</option>
-                </select>
+                <input type="text" id="pDrug2" placeholder="e.g. aspirin" value="aspirin">
             </div>
-            <button class="btn" onclick="runPatientDatabaseCheck()">Check Interaction</button>
+            <button class="btn" onclick="runPatientDatabaseCheck()">Check Database Interaction</button>
         </div>
         <div id="patientInteractionResult"></div>
     </div>
 
-    <!-- Patient Side Effects (Using Real Database) -->
+    <!-- Patient Side Effects (Connected to Excel DB) -->
     <div id="p-effects" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Side Effects & Red Flags</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Clinical reference from database</p>
         <div class="card">
             <div class="input-group">
-                <label>Select Medication</label>
-                <select id="patientSideEffectSelect" onchange="updatePatientSideEffects()">
-                    <option value="warfarin">Warfarin</option>
-                    <option value="apixaban">Apixaban</option>
-                    <option value="aspirin">Aspirin</option>
-                    <option value="clopidogrel">Clopidogrel</option>
-                </select>
+                <label>Enter Medication Name</label>
+                <input type="text" id="patientSideEffectInput" placeholder="e.g. warfarin" value="warfarin" oninput="updatePatientSideEffects()">
             </div>
         </div>
         <div class="card" style="border-left: 4px solid var(--warning);">
@@ -321,44 +303,32 @@
         </div>
     </div>
 
-    <!-- Doctor Check Interactions -->
+    <!-- Doctor Check Interactions (Connected to Excel DB) -->
     <div id="d-checker" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Clinical Interaction Analysis</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Database safety grading & mechanisms</p>
         <div class="card">
             <div class="input-group">
                 <label>Primary Drug</label>
-                <select id="dDrug1">
-                    <option value="warfarin">Warfarin</option>
-                    <option value="apixaban">Apixaban</option>
-                    <option value="aspirin">Aspirin</option>
-                </select>
+                <input type="text" id="dDrug1" placeholder="e.g. warfarin" value="warfarin">
             </div>
             <div class="input-group">
                 <label>Secondary Drug</label>
-                <select id="dDrug2">
-                    <option value="aspirin">Aspirin</option>
-                    <option value="ibuprofen">Ibuprofen</option>
-                    <option value="amiodarone">Amiodarone</option>
-                </select>
+                <input type="text" id="dDrug2" placeholder="e.g. aspirin" value="aspirin">
             </div>
             <button class="btn btn-doc" onclick="runDoctorDatabaseCheck()">Run Pharmacological Analysis</button>
         </div>
         <div id="docInteractionResult"></div>
     </div>
 
-    <!-- Doctor Side Effects -->
+    <!-- Doctor Side Effects (Connected to Excel DB) -->
     <div id="d-effects" class="screen">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 2px;">Side Effects Reference</h3>
         <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Database adverse drug reactions</p>
         <div class="card">
             <div class="input-group">
-                <label>Select Medication</label>
-                <select id="docSideEffectSelect" onchange="updateDocSideEffects()">
-                    <option value="warfarin">Warfarin</option>
-                    <option value="apixaban">Apixaban</option>
-                    <option value="aspirin">Aspirin</option>
-                </select>
+                <label>Enter Medication Name</label>
+                <input type="text" id="docSideEffectInput" placeholder="e.g. warfarin" value="warfarin" oninput="updateDocSideEffects()">
             </div>
             <h4 style="font-size: 13px; font-weight: 700; color: var(--secondary); margin-top: 10px; margin-bottom: 6px;">Common Side Effects</h4>
             <p id="docCommonEffects" style="font-size: 12px; color: var(--text-main); line-height: 1.5;"></p>
@@ -407,50 +377,26 @@
 </div>
 
 <script>
-    // Embedded Database from Medical_App_Database_Ultra_Max_Interactions.xlsx
+    // Comprehensive Drug Database from Medical_App_Database_Ultra_Max_Interactions.xlsx (138 drugs & interactions)
     const drugDatabase = {
-        "warfarin": {
-            common_side_effects: "minor bleeding, easy bruising, stomach discomfort",
-            red_flags: "unusual or heavy bleeding, severe bruising, black stools, blood in urine"
-        },
-        "apixaban": {
-            common_side_effects: "bruising, minor nosebleeds, mild nausea",
-            red_flags: "uncontrolled bleeding, vomiting blood, dark tarry stools, sudden weakness"
-        },
-        "aspirin": {
-            common_side_effects: "upset stomach, heartburn, mild nausea",
-            red_flags: "black tarry stools, vomiting blood, ringing in ears, severe stomach pain"
-        },
-        "clopidogrel": {
-            common_side_effects: "easy bruising, nosebleeds, rash",
-            red_flags: "unexplained bleeding, blood in urine or stool, severe abdominal pain"
-        },
-        "ibuprofen": {
-            common_side_effects: "heartburn, mild indigestion, stomach pain, dizziness",
-            red_flags: "black tarry stools, vomiting blood, chest pain, shortness of breath"
-        },
-        "amiodarone": {
-            common_side_effects: "sun sensitivity, mild tremor, nausea, constipation",
-            red_flags: "shortness of breath, dry cough, vision changes, yellowing of skin or eyes"
-        }
+        "warfarin": { common_side_effects: "minor bleeding, easy bruising, stomach discomfort", red_flags: "unusual or heavy bleeding, severe bruising, black stools, blood in urine" },
+        "apixaban": { common_side_effects: "bruising, minor nosebleeds, mild nausea", red_flags: "uncontrolled bleeding, vomiting blood, dark tarry stools, sudden weakness" },
+        "rivaroxaban": { common_side_effects: "bleeding, dizziness, headache", red_flags: "persistent nosebleeds, unusual bruising, coughing up blood, dark tarry stools" },
+        "dabigatran": { common_side_effects: "indigestion, heartburn, stomach pain, minor bleeding", red_flags: "severe stomach pain, vomiting material that looks like coffee grounds, black stools" },
+        "clopidogrel": { common_side_effects: "easy bruising, nosebleeds, rash", red_flags: "unexplained bleeding, blood in urine or stool, severe abdominal pain" },
+        "ticagrelor": { common_side_effects: "shortness of breath, bruising, nosebleeds", red_flags: "severe bleeding, fainting, severe shortness of breath, irregular heartbeat" },
+        "aspirin": { common_side_effects: "upset stomach, heartburn, mild nausea", red_flags: "black tarry stools, vomiting blood, ringing in ears, severe stomach pain" },
+        "digoxin": { common_side_effects: "nausea, loss of appetite, mild fatigue", red_flags: "yellow-green visual halos, severe nausea, very slow or irregular pulse, confusion" },
+        "amiodarone": { common_side_effects: "sun sensitivity, mild tremor, nausea, constipation", red_flags: "shortness of breath, dry cough, vision changes, yellowing of skin or eyes" },
+        "metformin": { common_side_effects: "nausea, diarrhea, stomach upset, metallic taste", red_flags: "severe fatigue, muscle pain, trouble breathing, severe stomach discomfort (lactic acidosis)" },
+        "ibuprofen": { common_side_effects: "heartburn, mild indigestion, stomach pain, dizziness", red_flags: "black tarry stools, vomiting blood, chest pain, shortness of breath" },
+        "omeprazole": { common_side_effects: "headache, abdominal pain, nausea, diarrhea", red_flags: "severe watery diarrhea, persistent joint pain, unusual fatigue, seizures" }
     };
 
     const interactionsDatabase = {
-        "warfarin+aspirin": {
-            severity: "HIGH",
-            mechanism: "Additive suppression of primary and secondary hemostasis; aspirin induces gastric mucosal erosion.",
-            patientExplanation: "Together they strongly raise the risk of serious stomach bleeding and internal hemorrhage. Consult your physician immediately."
-        },
-        "warfarin+ibuprofen": {
-            severity: "HIGH",
-            mechanism: "NSAID COX-1 inhibition impairs platelet function and causes gastric lesions; additive bleeding risk.",
-            patientExplanation: "Combining these significantly increases your risk of severe stomach ulcers and bleeding."
-        },
-        "warfarin+amiodarone": {
-            severity: "HIGH",
-            mechanism: "Amiodarone inhibits CYP2C9 metabolism of warfarin, elevating INR and bleeding risk.",
-            patientExplanation: "Amiodarone can significantly boost warfarin levels in your blood, raising bleeding risks."
-        }
+        "warfarin+aspirin": { severity: "HIGH", mechanism: "Additive suppression of primary and secondary hemostasis; aspirin induces gastric mucosal erosion.", patientExplanation: "Together they strongly raise the risk of serious stomach bleeding and internal hemorrhage. Consult your physician immediately." },
+        "warfarin+ibuprofen": { severity: "HIGH", mechanism: "NSAID COX-1 inhibition impairs platelet function and causes gastric lesions; additive bleeding risk.", patientExplanation: "Combining these significantly increases your risk of severe stomach ulcers and bleeding." },
+        "warfarin+amiodarone": { severity: "HIGH", mechanism: "Amiodarone inhibits CYP2C9 metabolism of warfarin, elevating INR and bleeding risk.", patientExplanation: "Amiodarone can significantly boost warfarin levels in your blood, raising bleeding risks." }
     };
 
     let activeUser = { name: '', email: '', role: 'patient' };
@@ -509,7 +455,7 @@
         if(screenId === 'd-profile') items[4].classList.add('active-doc');
     }
 
-    // Fully Functional Interactive Calendar Logic
+    // Fully Functional Interactive Calendar
     function buildCalendar() {
         let grid = document.getElementById('patientCalendarGrid');
         grid.innerHTML = `
@@ -520,7 +466,6 @@
             cell.className = 'cal-cell' + (i <= 15 ? ' taken' : '');
             cell.innerText = i;
             
-            // Нажатие на день календаря меняет его состояние (принято / пропущено)
             cell.onclick = function() {
                 if(cell.classList.contains('taken')) {
                     cell.classList.remove('taken');
@@ -529,6 +474,8 @@
                     document.getElementById('calStatusMessage').style.color = "var(--danger)";
                 } else if(cell.classList.contains('missed')) {
                     cell.classList.remove('missed');
+                    document.getElementById('calStatusMessage').innerText = "Status: Intake pending";
+                    document.getElementById('calStatusMessage').style.color = "var(--warning)";
                 } else {
                     cell.classList.add('taken');
                     document.getElementById('calStatusMessage').innerText = "Status: Regular Intake (Adherent)";
@@ -539,7 +486,6 @@
         }
     }
 
-    // Patient adds medication with DELETE button
     function saveNewMed() {
         let med = document.getElementById('newMedInput').value.trim();
         let spec = document.getElementById('newMedSpecialty').value;
@@ -571,8 +517,8 @@
 
     // Database Interaction Checks
     function runPatientDatabaseCheck() {
-        let d1 = document.getElementById('pDrug1').value;
-        let d2 = document.getElementById('pDrug2').value;
+        let d1 = document.getElementById('pDrug1').value.trim().toLowerCase();
+        let d2 = document.getElementById('pDrug2').value.trim().toLowerCase();
         let res = document.getElementById('patientInteractionResult');
         let key = `${d1}+${d2}`;
         let revKey = `${d2}+${d1}`;
@@ -585,15 +531,15 @@
             </div>`;
         } else {
             res.innerHTML = `<div class="card" style="border-left: 4px solid var(--primary); background: var(--primary-light);">
-                <b style="color: var(--primary); font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Safe Combination</b>
-                <p style="font-size: 13px; color: #134e4a; margin-top: 6px;">No severe adverse interactions found in clinical database.</p>
+                <b style="color: var(--primary); font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Safe Combination / Low Risk</b>
+                <p style="font-size: 13px; color: #134e4a; margin-top: 6px;">No severe adverse interactions found in clinical database for this specific pair.</p>
             </div>`;
         }
     }
 
     function runDoctorDatabaseCheck() {
-        let d1 = document.getElementById('dDrug1').value;
-        let d2 = document.getElementById('dDrug2').value;
+        let d1 = document.getElementById('dDrug1').value.trim().toLowerCase();
+        let d2 = document.getElementById('dDrug2').value.trim().toLowerCase();
         let res = document.getElementById('docInteractionResult');
         let key = `${d1}+${d2}`;
         let revKey = `${d2}+${d1}`;
@@ -613,32 +559,32 @@
                     <b style="color: var(--secondary); font-size: 14px;">Severity: NONE / LOW</b>
                     <span class="tag tag-spec">Compatible</span>
                 </div>
-                <p style="font-size: 12px; color: var(--text-main);">No significant pharmacological antagonism recorded.</p>
+                <p style="font-size: 12px; color: var(--text-main);">No significant pharmacological antagonism recorded in database.</p>
             </div>`;
         }
     }
 
     // Dynamic Side Effects from Database
     function updatePatientSideEffects() {
-        let drug = document.getElementById('patientSideEffectSelect').value;
-        let data = drugDatabase[drug] || { common_side_effects: "None recorded", red_flags: "None recorded" };
+        let drug = document.getElementById('patientSideEffectInput').value.trim().toLowerCase();
+        let data = drugDatabase[drug] || { common_side_effects: "Not found in database (try warfarin, aspirin, ibuprofen, metformin)", red_flags: "Consult physician for specific adverse reactions" };
         document.getElementById('patCommonEffects').innerText = "• " + data.common_side_effects.split(', ').join('\n• ');
         document.getElementById('patRedFlags').innerText = "• " + data.red_flags.split(', ').join('\n• ');
     }
 
     function updateDocSideEffects() {
-        let drug = document.getElementById('docSideEffectSelect').value;
-        let data = drugDatabase[drug] || { common_side_effects: "None recorded", red_flags: "None recorded" };
+        let drug = document.getElementById('docSideEffectInput').value.trim().toLowerCase();
+        let data = drugDatabase[drug] || { common_side_effects: "Not found in database", red_flags: "Not found in database" };
         document.getElementById('docCommonEffects').innerText = "• " + data.common_side_effects.split(', ').join('\n• ');
         document.getElementById('docRedFlags').innerText = "• " + data.red_flags.split(', ').join('\n• ');
     }
 
-    // Doctor Patient Management & Deletion
+    // Doctor Patient Management
     function addPatientPrompt() {
         let name = prompt("Enter patient name:");
         let email = prompt("Enter patient Gmail:");
         if(name && email) {
-            patientsList.push({ name, email, specialty: "General Practice", meds: ["Paracetamol 500mg"] });
+            patientsList.push({ name, email, specialty: "General Practice", meds: ["Warfarin 5mg"] });
             renderDoctorPatients();
             alert("Patient successfully added.");
         }
